@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#db75c5</color>
-    <color name="colorPrimaryDark">#c886e5</color>
-    <color name="colorAccent">#f6ecbf</color>
-    <color name="brightColor">#f7e8f6</color>
-    <color name="textItem">#a05f96</color>
-    <color name="selected">#f1c6e7</color>
+    <color name="colorPrimary">#bd83ce</color>
+    <color name="colorPrimaryDark">#22272B</color>
+    <color name="colorSecondary">#e5b0ea</color>
+    <color name="colorTertiary">#f1c6e7</color>
+    <color name="colorAccent">#ffffff</color>
 
-    <color name="unpressed">#CCCCCC</color>
-    <color name="pressed">#666666</color>
+    <color name="colorShadow">#E0E0E0</color>
+    <color name="description">#7F7F7F</color>
+    <color name="text_menu">#333333</color>
+    <color name="selectable_text">#404040</color>
 </resources>
