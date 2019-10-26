@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.leeseungchan.chulbalhama">
+    package="com.example.leeseungchan.chulbalhama"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -11,19 +12,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:text="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <activity android:name=".AddHabitActivity"
             android:parentActivityName=".MainActivity"
-            android:name=".HabitAddActivity"
-            android:label="출발하마">
+            />
 
-        </activity>
     </application>
 
 </manifest>
