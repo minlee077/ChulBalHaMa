@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/request_activity_updates_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:onClick="requestActivityUpdatesButtonHandler"
+        android:text="@string/request_activity_updates" />
+
+    <Button
+        android:id="@+id/remove_activity_updates_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:onClick="removeActivityUpdatesButtonHandler"
+        android:text="@string/remove_activity_updates" />
+
+    <Button
+        android:id="@+id/view_habits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="viewHabitListButtonHandler"
+        android:text="습관 목록 조회" />
+    <Button
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="addHabitButtonHandler"
+        android:text="습관 추가" />
+
+    <!--
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/pl"
+        android:onClick="addHabitButtonHandler"
+        app:fabSize="normal"
+        app:rippleColor="#FFFFFF"
+        />
+-->
+
+    <TextView
+        android:id="@+id/detectedActivities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/request_activity_updates_button"
+        android:text="@string/detected_activities_title" />
+
+</RelativeLayout>
