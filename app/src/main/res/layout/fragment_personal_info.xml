@@ -31,7 +31,7 @@
             style="@style/GuideText"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@string/setting_name"
+            android:hint="@string/setting_name"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/fragment_horizontal_margin_big"
             android:layout_marginLeft="@dimen/fragment_horizontal_margin_big"
