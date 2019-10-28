@@ -32,7 +32,7 @@ public class HabitListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_habit_list, container, false);
 
         // set up recycler view
-        recyclerView = (RecyclerView) v.findViewById(R.id.list_habit);
+        recyclerView = (RecyclerView) v.findViewById(R.id.list);
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -42,7 +42,7 @@ public class HabitListFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         // set add button
-        Button habitAddButton = v.findViewById(R.id.add_habit);
+        Button habitAddButton = v.findViewById(R.id.add);
         habitAddButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
