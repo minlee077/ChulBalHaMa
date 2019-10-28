@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.example.leeseungchan.chulbalhama.AddHabitActivity;
 import com.example.leeseungchan.chulbalhama.HabitAdapter;
 import com.example.leeseungchan.chulbalhama.ItemHabit;
+import com.example.leeseungchan.chulbalhama.MainActivity;
 import com.example.leeseungchan.chulbalhama.R;
 
 

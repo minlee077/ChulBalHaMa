@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        Fragment fg;
 
         if (id == R.id.nav_main) {
             if(!habitListFragment.isAdded()){
