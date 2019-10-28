@@ -25,6 +25,7 @@
             android:id="@+id/destination_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="@string/map_location_name_hint"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/content_space_small"/>
 

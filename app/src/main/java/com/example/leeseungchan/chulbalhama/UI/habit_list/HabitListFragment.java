@@ -37,8 +37,8 @@ public class HabitListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new HabitAdapter();
-        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("운동", "스쿼트 100회하기"));
-        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("책 읽기", "하루 10쪽이상 읽고 독후감 쓰기"));
+        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("영단어 외우기", "하루 20개 영단어 외우기"));
+        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("책 읽기", "하루 10쪽이상 읽기"));
         recyclerView.setAdapter(mAdapter);
 
         // set add button

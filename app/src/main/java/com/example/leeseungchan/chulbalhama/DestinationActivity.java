@@ -42,7 +42,7 @@ public class DestinationActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destination);
 
-        name = getResources().getString(R.string.map_location_name_hint);
+        name = null;
         latitude = 0;
         longtitude = 0;
         description = null;
