@@ -81,7 +81,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Toast.makeText(this, "Request Generated. Connection success", Toast.LENGTH_SHORT).show();
 
 
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, Constants.DETECTION_INTERVAL_IN_MILLISECONDS, getActivityPendingIntent()).setResultCallback(this);
+        System.out.println(this);
+
+        ActivityRecognition.ActivityRecognitionApi
+                .requestActivityUpdates(googleApiClient, Constants.DETECTION_INTERVAL_IN_MILLISECONDS, getActivityPendingIntent())
+                .setResultCallback(this);
         RequestActivityBtn.setEnabled(false);
         RemoveActivityBtn.setEnabled(true);
         countTime = System.currentTimeMillis();
@@ -107,7 +111,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         Toast.makeText(this, "Remove Connection", Toast.LENGTH_SHORT).show();
 
-        ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(googleApiClient, getActivityPendingIntent()).setResultCallback(this);
+        ActivityRecognition
+                .ActivityRecognitionApi
+                .removeActivityUpdates(googleApiClient, getActivityPendingIntent())
+                .setResultCallback(this);
         RequestActivityBtn.setEnabled(true);
         RemoveActivityBtn.setEnabled(false);
 
