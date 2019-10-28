@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/custom_radio">
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/custom_radio_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"

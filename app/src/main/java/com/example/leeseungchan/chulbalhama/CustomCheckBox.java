@@ -1,19 +1,19 @@
 package com.example.leeseungchan.chulbalhama;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 
-public class CustomRadioButton extends ConstraintLayout {
+public class CustomCheckBox extends ConstraintLayout {
     ConstraintLayout custom_radio;
-    RadioButton custom_radio_btn;
+    CheckBox custom_radio_btn;
 
-    public CustomRadioButton(@NonNull Context context, @Nullable AttributeSet attrs){
+    public CustomCheckBox(@NonNull Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
 
         inflateViews(context, attrs);
@@ -22,7 +22,7 @@ public class CustomRadioButton extends ConstraintLayout {
     void inflateViews(Context context, AttributeSet attrs) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.custom_radio_button, this);
+        inflater.inflate(R.layout.custom_checkbox, this);
 
         custom_radio_btn = findViewById(R.id.custom_radio_btn);
         custom_radio = findViewById(R.id.custom_radio);

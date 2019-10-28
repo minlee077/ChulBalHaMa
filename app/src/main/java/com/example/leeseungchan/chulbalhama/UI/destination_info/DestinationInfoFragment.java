@@ -61,7 +61,7 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
         setSpinnerListener(minute, R.id.min);
 
         EditText dest_name = v.findViewById(R.id.destination_name);
-        dest_name.setText(((DestinationActivity)getActivity()).getName());
+        dest_name.setHint(((DestinationActivity)getActivity()).getName());
         setNameListener(dest_name);
 
         return v;

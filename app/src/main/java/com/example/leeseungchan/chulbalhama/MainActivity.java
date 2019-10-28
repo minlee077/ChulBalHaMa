@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragment;
-import com.example.leeseungchan.chulbalhama.UI.test.TestFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        Fragment fg;
 
         if (id == R.id.nav_main) {
             if(!habitListFragment.isAdded()){
@@ -76,11 +76,6 @@ public class MainActivity extends AppCompatActivity
             if(!personalInfoFragment.isAdded()){
                 replaceFragment(personalInfoFragment);
                 setTitle(R.string.title_personal);
-            }
-        }else if (id == R.id.nav_test) {
-            if(!personalInfoFragment.isAdded()){
-                replaceFragment(TestFragment.newInstance());
-                setTitle(R.string.title_test);
             }
         }
 
