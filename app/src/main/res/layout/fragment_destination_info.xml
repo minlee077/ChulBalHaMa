@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="@string/map_location_when" />
+                android:text="@string/guide_when" />
 
             <view
                 android:layout_width="0dp"

@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
     <android.support.v7.widget.Toolbar
@@ -27,144 +28,105 @@
             />
     </android.support.v7.widget.Toolbar>
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_add_habit"
-        android:padding="30dp"
-        >
-
-        <!-- habit name -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/guide_habit_name_intro"
-            style="@style/GuideText"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar_add_habit">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="30dp">
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_add_habit"
+            android:padding="30dp"
+            >
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/guide_habit_name_hint"
-                android:textColorHint="@color/colorPrimary"/>
+
+            <!-- habit name -->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/guide_habit_name_end"
+                android:text="@string/guide_habit_name_intro"
                 style="@style/GuideText"/>
-
-
-
-        </LinearLayout>
-
-        <!-- habit description -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/guide_habit_desc_intro"
-            style="@style/GuideText"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="30dp">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/guide_habit_desc_hint"
-                android:textColorHint="@color/colorPrimary"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/guide_habit_desc_end"
-                style="@style/GuideText"/>
-        </LinearLayout>
-
-
-        <!-- prepare things -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/guide_ask_prepare"
-            style="@style/GuideText" />
-
-        <RadioGroup
-            android:id="@+id/prepare_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <RadioButton
-                android:id="@+id/prepare_need"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_need"
-                style="@style/SelectableButton"/>
-
-
-            <RadioButton
-                android:id="@+id/prepare_no_need"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_not_need"
-                style="@style/SelectableButton"/>
-        </RadioGroup>
-
-
-        <!-- data and place input -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/guide_date_and_place_intro"
-            style="@style/GuideText" />
-
-        <!-- radio buttons for day input-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/week1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="30dp">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/guide_habit_name_hint"
+                    android:textColorHint="@color/colorPrimary"
+                    android:selectAllOnFocus="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guide_habit_name_end"
+                    style="@style/GuideText"/>
             </LinearLayout>
 
+
+            <!-- habit description -->
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_habit_desc_intro"
+                style="@style/GuideText"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="30dp">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/guide_habit_desc_hint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/colorPrimary"
+                    android:selectAllOnFocus="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guide_habit_desc_end"
+                    style="@style/GuideText"/>
+            </LinearLayout>
+
+
+            <!-- prepare things -->
+            <include
+                android:id="@+id/prepare"
+                layout="@layout/item_selective"/>
+
+            <View android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/content_space_small"/>
+
+            <!-- day and place input -->
+
+            <include
+                android:id="@+id/day_place"
+                layout="@layout/item_selective"/>
+
+            <View android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/content_space_small"/>
+
+            <Button
+                android:id="@+id/store_habit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" @string/guide_date_and_place_middle"
-                android:layout_gravity="center_vertical"
-                style="@style/GuideText" />
-
+                style="@style/StoreButton"
+                android:text="@string/store"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginBottom="100dp"/>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/guide_date_and_place_end"
-            android:layout_marginBottom="30dp"
-            style="@style/GuideText"/>
-        <Button
-            android:id="@+id/store_habit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/StoreButton"
-            android:text="@string/store"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

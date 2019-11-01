@@ -13,17 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.leeseungchan.chulbalhama.AddHabitActivity;
-import com.example.leeseungchan.chulbalhama.HabitAdapter;
+import com.example.leeseungchan.chulbalhama.Adpater.HabitAdapter;
 import com.example.leeseungchan.chulbalhama.ItemHabit;
-import com.example.leeseungchan.chulbalhama.MainActivity;
 import com.example.leeseungchan.chulbalhama.R;
 
 
 public class HabitListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+
 
     @Nullable
     @Override
@@ -32,10 +29,13 @@ public class HabitListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_habit_list, container, false);
 
         // set up recycler view
+        RecyclerView recyclerView;
         recyclerView = (RecyclerView) v.findViewById(R.id.list);
+        RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
+        RecyclerView.Adapter mAdapter;
         mAdapter = new HabitAdapter();
         ((HabitAdapter) mAdapter).addHabit(new ItemHabit("영단어 외우기", "하루 20개 영단어 외우기"));
         ((HabitAdapter) mAdapter).addHabit(new ItemHabit("책 읽기", "하루 10쪽이상 읽기"));
