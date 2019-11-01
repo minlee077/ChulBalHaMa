@@ -7,6 +7,7 @@
     <dimen name="fragment_vertical_margin_big">50dp</dimen>
     <dimen name="fragment_horizontal_padding_small">16dp</dimen>
     <dimen name="fragment_vertical_padding_small">16dp</dimen>
+    <dimen name="content_margin_left">20dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
@@ -19,5 +20,5 @@
 
     <dimen name="fragment_padding_plain">30dp</dimen>
 
-    <dimen name="content_space_small">45dp</dimen>
+    <dimen name="content_space_small">40dp</dimen>
 </resources>

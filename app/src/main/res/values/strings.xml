@@ -12,7 +12,8 @@
     <string name="button_need">필요하다</string>
     <string name="button_not_need">전혀 필요없다.</string>
     <string name="button_change">바꾸기</string>
-    <string name="button_setting">설정하기</string>
+    <string name="button_setting">설정</string>
+    <string name="button_here">여기</string>
 
 
     <string name="guide_habit_name_intro">나는 출근/통학시간 중에</string>
@@ -43,10 +44,22 @@
     <string name="map_location_name_hint">EX) 회사, 학교</string>
     <string name="map_location_address">위치를 설정해 주세요</string>
     <string name="map_location_time_take">가는데 얼마나 걸리나요?</string>
+    <string name="map_location_when">언제 하실 예정이신가요?</string>
 
-
+    <string name="time_input">EX) 6:30</string>
     <string name="time_hour">시</string>
     <string name="time_minute">분</string>
+
+    <string name="day_rest">주말</string>
+    <string name="day_work">평일</string>
+    <string name="day_each">요일 별 설정하기</string>
+    <string name="day_mon">월</string>
+    <string name="day_the">화</string>
+    <string name="day_wes">수</string>
+    <string name="day_thr">목</string>
+    <string name="day_fri">금</string>
+    <string name="day_sat">토</string>
+    <string name="day_sun">일</string>
 
 
     <string name="openDrawerNavigation">OpenDrawerNavigation</string>

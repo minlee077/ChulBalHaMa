@@ -34,7 +34,7 @@ public class DestinationActivity extends AppCompatActivity{
     private int timeHour;
     private int timeMin;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private String name;
     private String description;
 
@@ -44,7 +44,7 @@ public class DestinationActivity extends AppCompatActivity{
 
         name = null;
         latitude = 0;
-        longtitude = 0;
+        longitude = 0;
         description = null;
         timeHour = 0;
         timeMin = 0;
@@ -83,12 +83,12 @@ public class DestinationActivity extends AppCompatActivity{
         this.name = name;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public double getLatitude() {

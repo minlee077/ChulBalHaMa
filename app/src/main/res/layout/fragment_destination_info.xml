@@ -2,98 +2,161 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/fragment_padding_plain">
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
         <TextView
             style="@style/MenuText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/map_location_name_guide"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/activity_vertical_margin" />
+            android:layout_gravity="left"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/map_location_name_guide" />
 
 
         <EditText
-            style="@style/GuideText"
             android:id="@+id/destination_name"
+            style="@style/GuideText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/map_location_name_hint"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/content_space_small"/>
-
-        <TextView
-            style="@style/MenuText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_location_address"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
-
-        <Button
-            android:id="@+id/destination_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/button_setting"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
+            android:layout_marginStart="@dimen/content_space_small"
+            android:layout_marginLeft="@dimen/content_space_small"
             android:layout_marginBottom="@dimen/content_space_small"
-            style="@style/StoreButton"/>
-
-        <TextView
-            style="@style/MenuText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_location_time_take"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            android:hint="@string/map_location_name_hint"
+            android:inputType="text"
+            android:maxEms="10"
+            android:minEms="1" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="@dimen/content_space_small"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/map_location_address" />
+
+            <view
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/destination_setting"
+                style="@style/StoreButton"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:text="@string/button_setting" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/destination_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="@dimen/content_space_small"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/map_location_time_take" />
+
+            <view
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/setting_time"
+                style="@style/StoreButton"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:text="@string/button_setting" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/destination_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="@dimen/content_space_small"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/map_location_when" />
+
+            <view
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/setting_when"
+                style="@style/StoreButton"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:text="@string/button_setting" />
+
+        </LinearLayout>
+
+
+        <include
+            layout="@layout/fragment_list"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/store_destination"
+            style="@style/StoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/content_space_small">
-            <Spinner
-                android:id="@+id/hour"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"/>
-            <TextView
-                style="@style/GuideText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/time_hour"
-                android:layout_gravity="center_vertical"
-                android:paddingRight="@dimen/activity_horizontal_margin"/>
-            <Spinner
-                android:id="@+id/min"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"/>
-            <TextView
-                style="@style/GuideText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/time_minute"
-                android:layout_gravity="center_vertical"/>
-        </LinearLayout>
+            android:text="@string/store"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/store_destination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/StoreButton"
-        android:text="@string/store"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.leeseungchan.chulbalhama.UI.components.CustomCheckBox;
+
 public class AddHabitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RadioButton needButton, noNeedButton;
@@ -84,7 +86,6 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
         params.weight = 1;
 
         String[] week = {"일", "월","화", "수","목","금","토"};
