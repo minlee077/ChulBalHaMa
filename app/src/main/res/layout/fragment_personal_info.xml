@@ -47,10 +47,15 @@
           android:layout_marginBottom="@dimen/content_space_small"/>
 
         <!-- destination -->
-        <include
-            android:id="@+id/info_destination"
-            layout="@layout/item_selective" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <include
+                android:id="@+id/info_destination"
+                layout="@layout/item_selective" />
+
+        </ScrollView>
     </LinearLayout>
 
 

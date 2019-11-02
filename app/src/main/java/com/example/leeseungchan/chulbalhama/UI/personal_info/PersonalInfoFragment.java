@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,11 +49,10 @@ public class PersonalInfoFragment extends Fragment{
         nameDeleteBtn.setVisibility(View.GONE);
         name.removeView(nameDeleteBtn);
 
-        // @todo need to get start point name data from db
+        // @todo need to get name data from db
         TextView textName = name.findViewById(R.id.item_name);
         textName.setText("Example");
 
-        // @todo need to get start point description data from db
         TextView nameDesc = name.findViewById(R.id.item_description);
         nameDesc.setVisibility(View.INVISIBLE);
 
@@ -79,7 +79,7 @@ public class PersonalInfoFragment extends Fragment{
         // @todo need to get start point description data from db
         TextView startPointDesc = startPoint.findViewById(R.id.item_description);
         startPointDesc.setEnabled(false);
-        startPointDesc.setText("Description");
+        startPointDesc.setText("location");
 
 
         /* destination */
@@ -94,17 +94,18 @@ public class PersonalInfoFragment extends Fragment{
             }
         });
 
-        // @todo need to get start point name data from db
         TextView endPointName = destination.findViewById(R.id.guide_for_selection);
         endPointName.setText(R.string.setting_destination);
 
-        // @todo need to get start point description data from db
         EditText endPointDesc = destination.findViewById(R.id.input_for_selection);
         endPointDesc.setVisibility(View.INVISIBLE);
         destination.removeView(endPointDesc);
 
-        RecyclerView descRecycler = destination.findViewById(R.id.list);
-        descRecycler.setVisibility(View.GONE);
+        RecyclerView destinationRecycler = destination.findViewById(R.id.list);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        destinationRecycler.setLayoutManager(layoutManager);
+        //@todo need to setup adapter to destinationRecycler.
 
         fragmentManager = getActivity().getSupportFragmentManager();
 
