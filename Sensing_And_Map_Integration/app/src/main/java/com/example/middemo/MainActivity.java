@@ -6,6 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Constraints;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.ListenableWorker;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -35,6 +42,7 @@ import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
@@ -88,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //        get_location1 = (Button)findViewById(R.id.get_location1);
-//        get_location2 = (Button)findViewById(R.id.get_location2);
-//        get_location3 = (Button)findViewById(R.id.get_location3);
+////        get_location2 = (Button)findViewById(R.id.get_location2);
+////        get_location3 = (Button)findViewById(R.id.get_location3);
         start_service = (Button) findViewById(R.id.start_service);
         show_map = (Button) findViewById(R.id.show_map);
         locationText = (TextView) findViewById(R.id.locationText);
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         homeLocation = new UserLocation(126.959992, 37.508427);
         schoolLocation = new UserLocation(126.957025, 37.503464);
+
 
         show_map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
         };
+
+        StartWorker();// worker 생성
     }
 
     //정민 시작
@@ -269,14 +280,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public class ActivityDetectionBroadcastReceiver extends BroadcastReceiver {// 리시버
         protected static final String TAG = "receiver";
         private int firstTimeCall = 0;
+        float[] confidenceOfActivity = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+        int maxIdx = 0;
+        long accumulatedTime = 0;
 
         @Override
         public void onReceive(Context context, Intent intent) {
             ArrayList<DetectedActivity> updatedActivities = intent.getParcelableArrayListExtra(Constants.ACTIVITY_EXTRA);
             String strStatus = "";
-            float[] confidenceOfActivity = new float[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-            int maxIdx = 0;
-            long accumulatedTime = 0;
             for (DetectedActivity activity : updatedActivities) {
                 int activityType = activity.getType(); // activity 타입 추출
                 if (activityType == 6)
@@ -295,18 +306,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         (lastAction == 3 || lastAction == 0) &&  //이전 행동이 멈춰있거나 교통수단에 탑승한 상태 일떄
                                 (maxIdx == 3 || maxIdx == 0)  //멈춰있거나 교통수단에 탑승한 상태 일때.
                 )
-                    strStatus += "일정시간 이상 정지하고 계십니다. 독서(습관)를 수행하세요. \n";
+                strStatus += "일정시간 이상 정지하고 계십니다. 독서(습관)를 수행하세요. \n";
                 lastAction = maxIdx;
             }
-
-
             if(firstTimeCall==0)
             {
                 strStatus += "집에서 나왔습니다!";
                 firstTimeCall=1;
             }
             Log.e(TAG, strStatus);
-            Toast.makeText(getApplicationContext(), strStatus, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), strStatus, Toast.LENGTH_SHORT).show();//appcontext에 토스트
             //detectedActivities.setText(strStatus);
 
 
@@ -338,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 return resources.getString(R.string.tilting);
             case DetectedActivity
                     .UNKNOWN:
-                return resources.getString(R.string.still);
+                return resources.getString(R.string.unknown);
             case DetectedActivity
                     .WALKING:
                 return resources.getString(R.string.walking);
@@ -487,5 +496,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void hideFragment() {
         getSupportFragmentManager().beginTransaction().hide(mapFragment).commit();
+    }
+
+
+    static void StartWorker()
+    {
+        Log.d("mwm", "MainActivity::StartWorker()");
+
+
+        /*
+        //ENQUEUED -> RUNNING -> ENQUEUED. 정의에 따르면 주기적 작업은 되풀이되어야하므로 성공 또는 실패 상태에서 종료 될 수 없음.
+        //명시적 취소 (혹은 retry)로만 종료 가능
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        //종료
+        //WorkRequest.Builder.setBackoffCriteria(BackoffPolicy, 시간, 시간단위).
+        */
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(TestWorker.class)
+                .setConstraints(constraints)
+                .addTag("myRequest")
+                .setInitialDelay(5, TimeUnit.SECONDS)
+                .build();
+
+        //        .setBackoffCriteria(
+        //                BackoffPolicy.LINEAR,
+        //                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+        //                TimeUnit.MILLISECONDS)
+        //Cancle :
+        //WorkManager.cancelWorkById(UUID)
+        //WorkManager.cancelWorkById(workRequest.getId());
+
+
+        //.setInputData(imageData)
+        //Data imageData = new Data.Builder
+        //                .putString(Constants.KEY_IMAGE_URI, imageUriString)
+        //                .build();
+        //.addTag("xx")
+
+        //work policyh : ttps://developer.android.com/reference/androidx/work/ExistingWorkPolicy.html
+        WorkManager.getInstance().enqueueUniqueWork("uniqueWork", ExistingWorkPolicy.REPLACE,workRequest);
     }
 }
