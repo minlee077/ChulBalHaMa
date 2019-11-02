@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.leeseungchan.chulbalhama.DestinationActivity;
@@ -31,6 +30,7 @@ import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragmen
 public class DestinationInfoFragment extends Fragment implements View.OnClickListener {
 
     private View view;
+    private Bundle bundle;
 
     public static DestinationInfoFragment newInstance() {
         return new DestinationInfoFragment();
@@ -44,16 +44,19 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
         view = v;
 
-        TextView destinationTimeBtn = v.findViewById(R.id.destination_time);
-        TextView destinationDescription = v.findViewById(R.id.destination_desc);
-
         Button destinationSetBtn = v.findViewById(R.id.destination_setting);
         destinationSetBtn.setOnClickListener(this);
 
         Button destinationStoreBtn = v.findViewById(R.id.store_destination);
         destinationStoreBtn.setOnClickListener(this);
 
+
         EditText dest_name = v.findViewById(R.id.destination_name);
+        String name = ((DestinationActivity)getActivity()).getName();
+        if(name != null) {
+            dest_name.setText(((DestinationActivity) getActivity()).getName());
+        }
+        setNameListener(dest_name);
 
         return v;
     }
@@ -72,6 +75,16 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
             //@todo implement insert operation to "destination" table.
             getActivity().finish();
         }
+    }
+
+    private void setAdapter(int id, Spinner spinner) {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                id, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
     private void setNameListener(EditText edit){
