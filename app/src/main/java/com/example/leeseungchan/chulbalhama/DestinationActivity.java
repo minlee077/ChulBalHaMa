@@ -1,7 +1,3 @@
-/**
- * @todo implement drop down
- */
-
 package com.example.leeseungchan.chulbalhama;
 
 import android.os.Bundle;

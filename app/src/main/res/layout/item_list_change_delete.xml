@@ -27,6 +27,7 @@
         android:textSize="15sp"
         android:layout_gravity="center_vertical"
         android:maxLength="15"
+        android:layout_marginHorizontal="10dp"
         android:layout_weight="1"/>
 
 
