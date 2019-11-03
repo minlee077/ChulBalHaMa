@@ -14,7 +14,7 @@
             android:id="@+id/guide_for_selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/GuideText"/>
+            style="@style/MenuText"/>
 
         <EditText
             android:id="@+id/input_for_selection"

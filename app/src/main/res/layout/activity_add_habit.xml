@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/guide_habit_name_hint"
                     android:textColorHint="@color/colorPrimary"
+                    android:textSize="15sp"
                     android:selectAllOnFocus="true" />
                 <TextView
                     android:layout_width="wrap_content"
