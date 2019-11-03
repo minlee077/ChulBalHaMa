@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.leeseungchan.chulbalhama.R;
-import com.example.leeseungchan.chulbalhama.DestinationActivity;
+import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 
 public class PersonalInfoFragment extends Fragment{
 
@@ -31,7 +31,7 @@ public class PersonalInfoFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle saveInstanceState){
+                             @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
 
         /* name */
@@ -51,7 +51,9 @@ public class PersonalInfoFragment extends Fragment{
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Title");
-                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_text, (ViewGroup) getView(), false);
+                View viewInflated =
+                        LayoutInflater.from(getContext())
+                                .inflate(R.layout.dialog_edit_text, (ViewGroup) getView(), false);
 
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 builder.setView(viewInflated);
@@ -73,8 +75,6 @@ public class PersonalInfoFragment extends Fragment{
                 });
 
                 builder.show();
-
-                Toast.makeText(getContext(), "변경 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,8 +100,9 @@ public class PersonalInfoFragment extends Fragment{
         startPointChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), LocationInfoActivity.class);
+                intent.putExtra("type", 0);
+                startActivity(intent);
             }
         });
 
@@ -116,7 +117,8 @@ public class PersonalInfoFragment extends Fragment{
         endPointChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DestinationActivity.class);
+                Intent intent = new Intent(getContext(), LocationInfoActivity.class);
+                intent.putExtra("type", 1);
                 startActivity(intent);
             }
         });

@@ -1,27 +1,19 @@
 package com.example.leeseungchan.chulbalhama;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 
-import com.example.leeseungchan.chulbalhama.UI.destination_info.DestinationInfoFragment;
-import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
-import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
-import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragment;
+import com.example.leeseungchan.chulbalhama.UI.location_info.DestinationInfoFragment;
+import com.example.leeseungchan.chulbalhama.UI.location_info.StartingPointInfoFragment;
 
-import org.w3c.dom.Text;
-
-public class DestinationActivity extends AppCompatActivity{
+public class LocationInfoActivity extends AppCompatActivity{
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
@@ -36,7 +28,10 @@ public class DestinationActivity extends AppCompatActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_destination);
+        setContentView(R.layout.activity_location_info);
+
+        Intent intent = getIntent();
+        int data = intent.getIntExtra("type", 1);
 
         name = null;
         latitude = 0;
@@ -54,14 +49,22 @@ public class DestinationActivity extends AppCompatActivity{
 
         //set up destination Info
         destinationInfoFragment = new DestinationInfoFragment();
+        final StartingPointInfoFragment startingPointInfoFragment = new StartingPointInfoFragment();
 
         fragmentManager = getSupportFragmentManager();
 
         transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, destinationInfoFragment)
-                .commitAllowingStateLoss();
+        if(data == 1) {
+            transaction.replace(R.id.nav_host_fragment, destinationInfoFragment)
+                    .commitAllowingStateLoss();
 
-        setTitle(R.string.title_destination);
+            setTitle(R.string.title_destination);
+        } else {
+            transaction.replace(R.id.nav_host_fragment, startingPointInfoFragment)
+                    .commitAllowingStateLoss();
+
+            setTitle(R.string.title_starting);
+        }
 
     }
 

@@ -1,20 +1,16 @@
 /**
  * @todo implement drop down
  */
-package com.example.leeseungchan.chulbalhama.UI.destination_info;
+package com.example.leeseungchan.chulbalhama.UI.location_info;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +24,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.leeseungchan.chulbalhama.DayTimeDialog;
-import com.example.leeseungchan.chulbalhama.DestinationActivity;
+import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
@@ -37,13 +33,16 @@ import java.util.ArrayList;
 
 public class DestinationInfoFragment extends Fragment implements View.OnClickListener {
 
-    private Bundle bundle;
     private ArrayList<Boolean> days = new ArrayList<>();
     private ArrayList<Integer> time = new ArrayList<>();
     int hour, min;
 
-    public static DestinationInfoFragment newInstance() {
-        return new DestinationInfoFragment();
+    Bundle bundle = new Bundle();
+
+    public static DestinationInfoFragment newInstance(Bundle bundle){
+        DestinationInfoFragment v = new DestinationInfoFragment();
+        v.bundle = bundle;
+        return v;
     }
 
     @Nullable
@@ -52,6 +51,7 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_destination_info, container, false);
 
+        bundle.putInt("type", 1);
 
         /* destination setting view */
         LinearLayout destinationCord = v.findViewById(R.id.destination_setting);
@@ -71,7 +71,7 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
                 FragmentTransaction transaction =
                         getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment fg;
-                fg = new MapAddFragment();
+                fg = MapAddFragment.newInstance(bundle);
                 if (!fg.isAdded()) {
                     transaction.replace(R.id.nav_host_fragment, fg)
                             .commitNowAllowingStateLoss();
@@ -163,9 +163,9 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
         destinationStoreBtn.setOnClickListener(this);
 
         EditText dest_name = v.findViewById(R.id.destination_name);
-        String name = ((DestinationActivity)getActivity()).getName();
+        String name = ((LocationInfoActivity)getActivity()).getName();
         if(name != null) {
-            dest_name.setText(((DestinationActivity) getActivity()).getName());
+            dest_name.setText(((LocationInfoActivity) getActivity()).getName());
         }
         setNameListener(dest_name);
 
@@ -199,7 +199,7 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                ((DestinationActivity)getActivity()).setName(arg0.toString());
+                ((LocationInfoActivity)getActivity()).setName(arg0.toString());
             }
 
             @Override
