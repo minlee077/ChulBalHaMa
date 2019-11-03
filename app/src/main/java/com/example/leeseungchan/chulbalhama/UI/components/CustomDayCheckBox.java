@@ -27,16 +27,22 @@ public class CustomDayCheckBox{
         boxes.add((CheckBox) view.findViewById(R.id.sun));
     }
     
-    public ArrayList<Boolean> getResult(){
-        ArrayList<Boolean> result = new ArrayList<>();
+    public void getResult(final ArrayList<Boolean> result){
         for(int i = 0; i< 7; i++){
-            if(boxes.get(i).isChecked()){
-                result.add(true);
+            if(result.size() <= i){
+                if(boxes.get(i).isChecked()){
+                    result.add(true);
+                }else{
+                    result.add(false);
+                }
             }else{
-                result.add(false);
+                if(boxes.get(i).isChecked()){
+                    result.set(i, true);
+                }else{
+                    result.add(i, false);
+                }
             }
         }
-        return result;
     }
 
 }

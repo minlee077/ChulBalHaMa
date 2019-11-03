@@ -3,6 +3,7 @@
  */
 package com.example.leeseungchan.chulbalhama.UI.destination_info;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +24,23 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.leeseungchan.chulbalhama.DayTimeDialog;
 import com.example.leeseungchan.chulbalhama.DestinationActivity;
 import com.example.leeseungchan.chulbalhama.R;
+import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
+
+import java.util.ArrayList;
 
 public class DestinationInfoFragment extends Fragment implements View.OnClickListener {
 
     private Bundle bundle;
+    private ArrayList<Boolean> days = new ArrayList<>();
+    private ArrayList<Integer> time = new ArrayList<>();
+    int hour, min;
 
     public static DestinationInfoFragment newInstance() {
         return new DestinationInfoFragment();
@@ -78,7 +88,7 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
         LinearLayout timeCord = v.findViewById(R.id.destination_time_duration);
 
         // time TextView guide text
-        TextView timeGuideText = timeCord.findViewById(R.id.item_name);
+        final TextView timeGuideText = timeCord.findViewById(R.id.item_name);
         timeGuideText.setText(R.string.guide_when_time);
 
         TextView timeText = timeCord.findViewById(R.id.item_description);
@@ -90,6 +100,21 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 // @todo time-day dialog is needed.
+                TimePickerDialog dialog = new TimePickerDialog(
+                                getContext(),
+                                android.R.style.Theme_Holo_Light_Dialog,
+                                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        hour = hourOfDay;
+                        min = minute;
+                        timeGuideText.setText(hourOfDay + "시간 " + minute + "분");
+                    }
+                }, 0,0,false);
+
+
+                dialog.show();
+
                 Toast.makeText(getContext(), "button clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -99,28 +124,41 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
         timeCord.removeView(timeDelButton);
 
 
-        /* destination */
+        /* start time */
+
+        // set 2d array for day and time
+        LinearLayout dayInput = v.findViewById(R.id.day_input);
+        final CustomSevenDayInfo sevenDayInfo = new CustomSevenDayInfo(dayInput);
+
+        // set input layout
         LinearLayout destination = v.findViewById(R.id.destination_time_start);
 
-        TextView endPointName = destination.findViewById(R.id.guide_for_selection);
-        endPointName.setText(R.string.map_location_go_time);
+        // time TextView guide text
+        TextView endPointName = destination.findViewById(R.id.item_name);
+        endPointName.setVisibility(View.INVISIBLE);
 
-        EditText endPointDesc = destination.findViewById(R.id.input_for_selection);
+        TextView endPointDesc = destination.findViewById(R.id.item_description);
         endPointDesc.setVisibility(View.INVISIBLE);
-        destination.removeView(endPointDesc);
 
-        Button endPointChangeBtn = destination.findViewById(R.id.button_for_selection);
+        // set add button
+        Button endPointChangeBtn = destination.findViewById(R.id.button_change);
         endPointChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DayTimeDialog dayTimeDialog = new DayTimeDialog(getContext());
+                dayTimeDialog.callFunction(days, time, sevenDayInfo);
+                // @todo time-day dialog is needed && call cusromSevenDayInfo for updating
+                Toast.makeText(getContext(), "button clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        RecyclerView destinationRecycler = destination.findViewById(R.id.list);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        destinationRecycler.setLayoutManager(layoutManager);
+        endPointChangeBtn.setText(R.string.button_setting);
+
+        Button startTimeDel = destination.findViewById(R.id.button_delete);
+        startTimeDel.setVisibility(View.GONE);
+        destination.removeView(timeDelButton);
 
 
+        /* destination store */
         Button destinationStoreBtn = v.findViewById(R.id.store_destination);
         destinationStoreBtn.setOnClickListener(this);
 

@@ -2,59 +2,58 @@ package com.example.leeseungchan.chulbalhama;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.leeseungchan.chulbalhama.Adpater.DaysAdapter;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomDayCheckBox;
+import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 
 import java.util.ArrayList;
 
-
-public class DayPlaceDialog {
+public class DayTimeDialog {
     private Context context;
-    private DaysAdapter dayPlaceAdapter;
 
-    public DayPlaceDialog(Context context) {
+    public DayTimeDialog(Context context) {
         this.context = context;
     }
 
-    public void callFunction(final ArrayList<ArrayList<Boolean>> result,
-                             final ArrayList<String> selected,
-                             final RecyclerView.Adapter dayPlaceAdapter) {
+    public void callFunction(final ArrayList<Boolean> result,
+                             final ArrayList<Integer> numbers,
+                             final CustomSevenDayInfo sevenDayInfo) {
 
         final Dialog dlg = new Dialog(context);
 
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        dlg.setContentView(R.layout.dialog_day_place);
+        dlg.setContentView(R.layout.dialog_time_day);
 
         dlg.show();
 
         final CustomDayCheckBox dayCheckBox =
                 new CustomDayCheckBox(dlg.findViewById(R.id.custom_days_checkbox));
-        final Spinner placeSelector = (Spinner)dlg.findViewById(R.id.spinner);
+        final TimePicker timePicker = (TimePicker) dlg.findViewById(R.id.time_picker);
         final Button okButton = (Button) dlg.findViewById(R.id.okButton);
         final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                dlg.getContext(),
-                R.array.day_array,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        placeSelector.setAdapter(adapter);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selected.add(placeSelector.getSelectedItem().toString());
-                dayPlaceAdapter.notifyDataSetChanged();
+                if(numbers.size() != 0) {
+                    numbers.set(0, timePicker.getCurrentHour());
+                }else{
+                    numbers.add(timePicker.getCurrentHour());
+                }
+
+                if(numbers.size() == 2) {
+                    numbers.set(1, timePicker.getCurrentHour());
+                }else{
+                    numbers.add(timePicker.getCurrentMinute());
+                }
+                dayCheckBox.getResult(result);
+                sevenDayInfo.setTime(result, numbers);
                 dlg.dismiss();
             }
         });

@@ -12,12 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.leeseungchan.chulbalhama.Adpater.DatePlaceAdapter;
+import com.example.leeseungchan.chulbalhama.Adpater.DaysAdapter;
 import com.example.leeseungchan.chulbalhama.Adpater.prepareAdapter;
-import com.example.leeseungchan.chulbalhama.UI.components.CustomCheckBox;
-import com.google.android.gms.vision.text.Line;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AddHabitActivity extends AppCompatActivity implements View.OnClickListener {
@@ -94,7 +91,7 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
         placeLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         dayPlaceRecycle.setLayoutManager(placeLayoutManager);
 
-        final RecyclerView.Adapter dayPlaceAdapter = new DatePlaceAdapter(days, places);
+        final RecyclerView.Adapter dayPlaceAdapter = new DaysAdapter(days);
         dayPlaceRecycle.setAdapter(dayPlaceAdapter);
 
         // day and place Button to add
