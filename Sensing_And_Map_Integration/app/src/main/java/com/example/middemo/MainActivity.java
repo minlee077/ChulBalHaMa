@@ -503,8 +503,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     {
         Log.d("mwm", "MainActivity::StartWorker()");
 
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
-        /*
         //ENQUEUED -> RUNNING -> ENQUEUED. 정의에 따르면 주기적 작업은 되풀이되어야하므로 성공 또는 실패 상태에서 종료 될 수 없음.
         //명시적 취소 (혹은 retry)로만 종료 가능
         PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES)
@@ -513,11 +515,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         //종료
         //WorkRequest.Builder.setBackoffCriteria(BackoffPolicy, 시간, 시간단위).
-        */
-
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(TestWorker.class)
                 .setConstraints(constraints)

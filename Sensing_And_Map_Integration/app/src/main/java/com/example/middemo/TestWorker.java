@@ -1,13 +1,18 @@
 package com.example.middemo;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -20,9 +25,17 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.middemo.MainActivity.StartWorker;
 
 public class TestWorker extends Worker {
+
+
+    public static final String CHANNEL_ID = "ForegroundServiceChannel";
+    Notification notification;
+    NotificationManager manager;
+    Context mContext;
+
     public TestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
         super(context, workerParams);
+        mContext = context;
     }
 
     @NonNull
@@ -33,13 +46,48 @@ public class TestWorker extends Worker {
         // Start new worker
 
         // 작업 수행
+
+
+        createNotificationChannel();
         showNotification();
+        manager.notify(1, notification);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Run your task here
+                Toast.makeText(mContext, "BackGround Service running...", Toast.LENGTH_SHORT).show();
+            }
+        },0);;
+
+
+
         StartWorker(); // 재귀 생성
 
         //needs to be retried at a later time via Result.retry() 실패시 처리 필요 예상
 
         return Result.success();
 
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Foreground Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+
+            notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID) //CHANNEL_ID 채널에 지정한 아이디
+                    .setContentTitle("background machine")
+                    .setContentText("알림입니다")
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setOngoing(true).build();
+
+            manager = getApplicationContext().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
+        }
     }
 
     private void showNotification()
@@ -53,7 +101,7 @@ public class TestWorker extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         // Create notification
-        Notification notification = new NotificationCompat.Builder(context, "c1")
+        Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 // Do not set this if we want silent notifications!
                 .setDefaults(Notification.DEFAULT_SOUND)
                 // be part of a group of notifications sharing the same key
@@ -83,16 +131,16 @@ public class TestWorker extends Worker {
                 .build();
 
         // Send the notification. This will immediately display the notification icon in the notification bar.
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        if (notificationManager == null)
-        {
-            return;
-        }
+//        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+//        if (notificationManager == null)
+//        {
+//            return;
+//        }
 
         // Here, messages get stacked
         //notificationManager.notify((int) (System.currentTimeMillis() / 1000), notification);
 
         // Replace notifications
-        notificationManager.notify(1, notification);
+//        notificationManager.notify(1, notification);
     }
 }
