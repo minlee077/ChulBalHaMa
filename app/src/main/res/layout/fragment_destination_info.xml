@@ -4,142 +4,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/fragment_padding_plain">
+    android:layout_height="match_parent">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            style="@style/MenuText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:text="@string/map_location_name_guide" />
-
-
-        <EditText
-            android:id="@+id/destination_name"
-            style="@style/GuideText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="@dimen/content_space_small"
-            android:layout_marginLeft="@dimen/content_space_small"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:hint="@string/map_location_name_hint"
-            android:inputType="text"
-            android:maxEms="10"
-            android:minEms="1" />
+        android:padding="@dimen/fragment_padding_plain">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
 
+
+            <!-- location name -->
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/map_location_name_guide"
+                android:layout_marginBottom="@dimen/activity_vertical_margin" />
+
+            <EditText
+                android:id="@+id/destination_name"
+                style="@style/GuideText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="@dimen/content_space_small"
+                android:layout_marginLeft="@dimen/content_space_small"
+                android:layout_marginBottom="@dimen/content_space_small"
+                android:hint="@string/map_location_name_hint"
+                android:inputType="text"
+                android:maxEms="10"
+                android:minEms="1" />
+
+
+            <!-- location address -->
             <TextView
                 style="@style/MenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text="@string/map_location_address" />
+                android:text="@string/map_location_address"
+                android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
-            <View
-                android:layout_width="0dp"
+            <include android:id="@+id/destination_setting"
+                layout="@layout/item_list_change_delete"/>
+
+            <View android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_marginBottom="@dimen/content_space_small"/>
 
-            <Button
-                android:id="@+id/destination_setting"
-                style="@style/StoreButton"
-                android:layout_width="60dp"
-                android:layout_height="25dp"
-                android:layout_gravity="end"
-                android:text="@string/button_setting" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/destination_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:orientation="horizontal">
-
+            <!-- duration -->
             <TextView
                 style="@style/MenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="@string/map_location_time_take" />
+                android:text="@string/map_location_time_take"
+                android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
-            <View
-                android:layout_width="0dp"
+            <include android:id="@+id/destination_time_duration"
+                layout="@layout/item_list_change_delete"/>
+
+            <View android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_marginBottom="@dimen/content_space_small"/>
+
+
+            <!-- starting time -->
+            <include android:id="@+id/destination_time_start"
+                layout="@layout/item_selective"/>
+
+            <View android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/content_space_small"/>
 
             <Button
-                android:id="@+id/setting_time"
+                android:id="@+id/store_destination"
                 style="@style/StoreButton"
-                android:layout_width="60dp"
-                android:layout_height="25dp"
-                android:layout_gravity="end"
-                android:text="@string/button_setting" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/destination_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/MenuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="@string/guide_when" />
-
+                android:layout_gravity="center"
+                android:text="@string/store"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/store_destination"
-            style="@style/StoreButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/store"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

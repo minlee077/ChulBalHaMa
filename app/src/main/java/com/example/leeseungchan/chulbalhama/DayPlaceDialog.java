@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,7 +32,7 @@ public class DayPlaceDialog {
 
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        dlg.setContentView(R.layout.day_place_dialog);
+        dlg.setContentView(R.layout.dialog_day_place);
 
         dlg.show();
 

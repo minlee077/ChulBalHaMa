@@ -24,13 +24,15 @@
             android:layout_height="wrap_content"
             android:maxLength="10"
             android:layout_weight="1"
-            android:selectAllOnFocus="true"/>
+            android:selectAllOnFocus="true"
+            android:hint="@string/hint_empty_edit_text"/>
         <Button
             android:id="@+id/button_for_selection"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/button_size_width"
+            android:layout_height="@dimen/button_size_height"
             android:text="@string/button_add"
-            android:layout_gravity="end"
+            android:layout_gravity="center_vertical|end"
+            android:padding="@dimen/button_padding"
             style="@style/StoreButton"/>
 
     </LinearLayout>

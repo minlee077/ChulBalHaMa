@@ -3,9 +3,7 @@ package com.example.leeseungchan.chulbalhama.UI.personal_info;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.leeseungchan.chulbalhama.MainActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.DestinationActivity;
-
-import org.w3c.dom.Text;
 
 public class PersonalInfoFragment extends Fragment{
 
@@ -57,7 +51,7 @@ public class PersonalInfoFragment extends Fragment{
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Title");
-                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.edit_text_dialog, (ViewGroup) getView(), false);
+                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_text, (ViewGroup) getView(), false);
 
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 builder.setView(viewInflated);
