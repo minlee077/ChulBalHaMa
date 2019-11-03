@@ -10,7 +10,10 @@ import java.util.ArrayList;
 
 public class CustomSevenDayInfo {
     private ArrayList<LinearLayout> dayInputs = new ArrayList<>();
+    private View view;
     public CustomSevenDayInfo(View v){
+        this.view = v;
+
         dayInputs.add((LinearLayout) v.findViewById(R.id.s_mon));
         dayInputs.add((LinearLayout) v.findViewById(R.id.s_the));
         dayInputs.add((LinearLayout) v.findViewById(R.id.s_wes));
@@ -29,10 +32,19 @@ public class CustomSevenDayInfo {
         }
     }
 
+    public void setPlace(){
+        for (int i = 0; i < 7; i++) {
+            dayInputs.get(i).findViewById(R.id.day_place).setVisibility(View.VISIBLE);
+            //@todo db 연동으로 글자 띄워와야함.
+        }
+    }
+
+    private void setTimeData(){
+        //@todo 시간 데이터랑 장소 데이터 받아와서 보여주어야함.
+    }
+
     public void setTime(final ArrayList<Boolean> selectedDays, final ArrayList<Integer> time){
-        System.out.println("is called here?");
         if(selectedDays.size() != 0) {
-            System.out.println("or here?");
             String timeInput = time.get(0).toString() + ":" + time.get(1).toString();
             for (int i = 0; i < 7; i++) {
                 TextView v;
@@ -40,6 +52,20 @@ public class CustomSevenDayInfo {
                 if (selectedDays.get(i)) {
                     v = dayInputs.get(i).findViewById(R.id.day_time);
                     v.setText(timeInput);
+                }
+            }
+        }
+    }
+    public void pickDay(final ArrayList<Boolean> selectedDays){
+        if(selectedDays.size() != 0) {
+            for (int i = 0; i < 7; i++) {
+                if (selectedDays.get(i)) {
+                    dayInputs.get(i).setBackgroundColor(
+                            view.getResources().getColor(R.color.colorTertiary));
+                }else{
+                    dayInputs.get(i).setBackgroundColor(
+                            view.getResources().getColor(R.color.common_google_signin_btn_text_dark_default)
+                    );
                 }
             }
         }

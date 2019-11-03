@@ -2,59 +2,47 @@ package com.example.leeseungchan.chulbalhama;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.leeseungchan.chulbalhama.Adpater.DaysAdapter;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomDayCheckBox;
+import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 
 import java.util.ArrayList;
 
 
-public class DayPlaceDialog {
+public class DayDialog {
     private Context context;
-    private DaysAdapter dayPlaceAdapter;
 
-    public DayPlaceDialog(Context context) {
+    public DayDialog(Context context) {
         this.context = context;
     }
 
-    public void callFunction(final ArrayList<ArrayList<Boolean>> result,
-                             final ArrayList<String> selected,
-                             final RecyclerView.Adapter dayPlaceAdapter) {
+    public void callFunction(final ArrayList<Boolean> result,
+                             final CustomSevenDayInfo customSevenDayInfo) {
 
         final Dialog dlg = new Dialog(context);
 
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        dlg.setContentView(R.layout.dialog_day_place);
+        dlg.setContentView(R.layout.dialog_day);
 
         dlg.show();
 
         final CustomDayCheckBox dayCheckBox =
                 new CustomDayCheckBox(dlg.findViewById(R.id.custom_days_checkbox));
-        final Spinner placeSelector = (Spinner)dlg.findViewById(R.id.spinner);
         final Button okButton = (Button) dlg.findViewById(R.id.okButton);
         final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                dlg.getContext(),
-                R.array.day_array,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        placeSelector.setAdapter(adapter);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selected.add(placeSelector.getSelectedItem().toString());
-                dayPlaceAdapter.notifyDataSetChanged();
+                dayCheckBox.getResult(result);
+                customSevenDayInfo.pickDay(result);
+
                 dlg.dismiss();
             }
         });

@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.leeseungchan.chulbalhama.Adpater.DaysAdapter;
 import com.example.leeseungchan.chulbalhama.Adpater.prepareAdapter;
+import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
     // prepare
     private ArrayList<String> prepares = new ArrayList<>();
     // day and place
-    private ArrayList<ArrayList<Boolean>> days = new ArrayList<>();
+    private ArrayList<Boolean> days = new ArrayList<>();
     private ArrayList<String> places = new ArrayList<>();
 
     @Override
@@ -75,35 +75,33 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
 
 
         /* day and place input*/
-        final LinearLayout dayPlace = findViewById(R.id.day_place);
+        final LinearLayout dayPlace = findViewById(R.id.add_habit_intro);
+
+        final CustomSevenDayInfo customSevenDayInfo =
+                new CustomSevenDayInfo(findViewById(R.id.add_habit_day));
+        customSevenDayInfo.setPlace();
 
         // day and place TextView guide text
-        guideText = dayPlace.findViewById(R.id.guide_for_selection);
+        guideText = dayPlace.findViewById(R.id.item_name);
         guideText.setText(R.string.guide_date_and_place_intro);
 
-        EditText text = dayPlace.findViewById(R.id.input_for_selection);
+        TextView text = dayPlace.findViewById(R.id.item_description);
         text.setVisibility(View.INVISIBLE);
 
-        // set recycler view
-        final RecyclerView dayPlaceRecycle = dayPlace.findViewById(R.id.list);
-
-        RecyclerView.LayoutManager placeLayoutManager;
-        placeLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        dayPlaceRecycle.setLayoutManager(placeLayoutManager);
-
-        final RecyclerView.Adapter dayPlaceAdapter = new DaysAdapter(days);
-        dayPlaceRecycle.setAdapter(dayPlaceAdapter);
-
         // day and place Button to add
-        Button dayPlaceInputButton = dayPlace.findViewById(R.id.button_for_selection);
+        Button dayPlaceInputButton = dayPlace.findViewById(R.id.button_change);
         dayPlaceInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DayPlaceDialog customDialog = new DayPlaceDialog(AddHabitActivity.this);
+                DayDialog customDialog = new DayDialog(AddHabitActivity.this);
 
-                customDialog.callFunction(days, places, dayPlaceAdapter);
+                customDialog.callFunction(days, customSevenDayInfo);
             }
         });
+
+        Button dayDelInputButton = dayPlace.findViewById(R.id.button_delete);
+        dayPlace.removeView(dayDelInputButton);
+
 
         Button store = findViewById(R.id.store_habit);
         store.setOnClickListener(this);

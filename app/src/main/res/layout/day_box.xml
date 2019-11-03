@@ -17,4 +17,12 @@
         android:layout_weight="1"
         android:background="@drawable/stroke_box"
         android:gravity="center"/>
+    <TextView
+        android:id="@+id/day_place"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/stroke_box"
+        android:gravity="center"
+        android:visibility="gone"/>
 </LinearLayout>

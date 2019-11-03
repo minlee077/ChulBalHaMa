@@ -54,6 +54,7 @@ public class DayTimeDialog {
                 }
                 dayCheckBox.getResult(result);
                 sevenDayInfo.setTime(result, numbers);
+                sevenDayInfo.pickDay(result);
                 dlg.dismiss();
             }
         });

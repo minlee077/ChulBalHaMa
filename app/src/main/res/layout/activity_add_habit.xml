@@ -111,8 +111,16 @@
             <!-- day and place input -->
 
             <include
-                android:id="@+id/day_place"
-                layout="@layout/item_selective"/>
+                android:id="@+id/add_habit_intro"
+                layout="@layout/item_list_change_delete"/>
+
+            <View android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+            <include
+                android:id="@+id/add_habit_day"
+                layout="@layout/item_seven_day_boxes"/>
 
             <View android:layout_width="0dp"
                 android:layout_height="0dp"
