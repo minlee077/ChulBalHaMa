@@ -4,7 +4,7 @@ public class UserVO {
 
     int id;
     String startingCoordinate;
-    String otherInformations;
+    String name;
 
 }
 

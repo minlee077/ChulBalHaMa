@@ -4,5 +4,6 @@ public class HabitsVO {
     int id;
     String habitName;
     String description;
-    String achievementRate;
+    String prepare;
+    int achievementRate;
 }

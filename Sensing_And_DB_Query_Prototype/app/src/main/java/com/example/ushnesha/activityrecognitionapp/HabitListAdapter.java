@@ -13,25 +13,23 @@ import java.util.ArrayList;
 
 
 //Caller : HabitListActivity ( ListView구성 )
-public class HabitListAdapter extends ArrayAdapter<HabitsVO> {
+public class HabitListAdapter extends ArrayAdapter<HistoryVO> {
     Context context;
-    ArrayList<HabitsVO> data;
+    ArrayList<HistoryVO> data;
     int resId; // 항목하나에 대한 layout resource Id
 
-    public HabitListAdapter(Context context, int resId, ArrayList<HabitsVO> data) {
+    public HabitListAdapter(Context context, int resId, ArrayList<HistoryVO> data) {
         super(context, resId);
         this.context = context;
         this.data = data;
         this.resId = resId;
     }
 
-
     // 항목 갯수
     @Override
     public int getCount() {
         return data.size();
     }
-
 
     //항목 하나를 구성하기위해 자동으로 call되는 함수
     // position : 항목 번호,
@@ -57,8 +55,8 @@ public class HabitListAdapter extends ArrayAdapter<HabitsVO> {
 
         TextView habitsView = wrapper.habitsView;//inner class에서 사용시 final 선언필요
 
-        final HabitsVO vo = data.get(position);
-        habitsView.setText(vo.habitName);
+        final HistoryVO vo = data.get(position);
+        habitsView.setText("habit id: "+vo.habitId +" idle Time:"+ vo.idelTime +" id:"+ vo.id);
         return convertView;
     }
 }

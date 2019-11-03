@@ -32,8 +32,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
-
-
     static long countTime = 0;
     static long activityTimes[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     static int lastAction = -1;

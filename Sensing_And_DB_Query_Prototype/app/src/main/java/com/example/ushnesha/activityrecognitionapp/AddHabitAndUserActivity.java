@@ -1,19 +1,22 @@
 package com.example.ushnesha.activityrecognitionapp;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 
 public class AddHabitAndUserActivity extends AppCompatActivity  {
 
 
-    Button RequestActivityBtn;
     @Bind(R.id.habit_add_btn)
     Button addHabit;
     @Bind(R.id.user_add_btn)
@@ -45,9 +48,11 @@ public class AddHabitAndUserActivity extends AppCompatActivity  {
             Toast t = Toast.makeText(this, "습관명을 추가하세요.", Toast.LENGTH_SHORT);
             t.show();
         } else {
+            // 입력 완료 DB 추가 로직
             DBHelper helper = new DBHelper(this);
             SQLiteDatabase db = helper.getWritableDatabase();
-            db.execSQL("insert into habits (habit_name, description) values(?,?)",new String[]{habitName, description} );
+            db.execSQL("insert into habits (habit_name, description) values(?,?)",new Object[]{habitName, description} );
+            Log.e("DB", "habit name : "+habitName+" desc:"+description);
             db.close();
             finish();
 
@@ -56,18 +61,43 @@ public class AddHabitAndUserActivity extends AppCompatActivity  {
 
     public void addUserButtonHandler(View v)
     {
-        String startCoordinate = start_coordinateView.getText().toString();
-        String otherInfo = other_infoView.getText().toString();
-
-        if (startCoordinate == null || startCoordinate.equals("")) {
+        String achi = start_coordinateView.getText().toString();
+        String hName = start_coordinateView.getText().toString();
+        String depT = other_infoView.getText().toString();
+        String arrT =  other_infoView.getText().toString();
+        String idleT = other_infoView.getText().toString();
+        int hId=-1;
+        if (achi == null || achi.equals("")) {
             Toast t = Toast.makeText(this, "위치를 입력하세요.", Toast.LENGTH_SHORT);
             t.show();
         }else{
+            // 입력 완료 DB 추가로직
             DBHelper helper = new DBHelper(this);
             SQLiteDatabase db = helper.getWritableDatabase();
-            db.execSQL("insert into user (starting_coordinate, other_Information) values(?,?)",new String[]{startCoordinate, otherInfo} );
-            db.close();
-            finish();
+            Cursor cursor = db.rawQuery("select _id from habits where ?=habit_name", new String[]{hName});
+            Log.e("DB add", " habit name: "+hName);
+
+            while(cursor.moveToNext()){
+                hId=cursor.getInt(0);
+                Log.e("DB HistAdd", "found habit id : "+hId+" habit name:"+hName);
+
+            }
+            if(hId==-1) // habit에 없는 habit 이름 입력시에
+            {
+                Toast t = Toast.makeText(this, "등록되지 않은 습관입니다.", Toast.LENGTH_SHORT);
+                t.show();
+                db.close();
+            }
+            else{
+                db.execSQL("insert into history (achievement, departure_time,arrival_time,idle_time, habit_id ) " +
+                        "values(?,?,?,?,?)",new Object[]{achi,depT, arrT,idleT,hId} );
+                Log.e("DB HistAdd", "DB insertion Success : "+hId+" habit name:"+hName);
+                db.close();
+                finish();
+
+            }
+
+
         }
     }
 

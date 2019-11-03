@@ -15,7 +15,7 @@ public class HabitListActivity extends AppCompatActivity implements AdapterView.
 
     ListView listView;
 
-    ArrayList<HabitsVO> data;
+    ArrayList<HistoryVO> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +40,18 @@ public class HabitListActivity extends AppCompatActivity implements AdapterView.
         super.onResume();
         DBHelper helper = new DBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from habits order by habit_name", null);
+        Cursor cursor = db.rawQuery("select * from history order by _id", null);
 
         data=new ArrayList<>();
         while(cursor.moveToNext()){
-            HabitsVO vo = new HabitsVO();
+            HistoryVO vo = new HistoryVO();
             vo.id = cursor.getInt(0);
-            vo.habitName = cursor.getString(1);
-            vo.description = cursor.getString(2);
-            vo.achievementRate = cursor.getString(3);
+            vo.achievement = cursor.getString(1);
+            vo.departureTime = cursor.getString(2);
+            vo.arrivalTime = cursor.getString(3);
+            vo.idelTime = cursor.getString(4);
+            vo.habitId= cursor.getInt(5);
+
             data.add(vo);
         }
         db.close();
