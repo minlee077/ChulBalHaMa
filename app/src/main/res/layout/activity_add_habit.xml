@@ -57,6 +57,7 @@
                 android:paddingBottom="30dp">
 
                 <EditText
+                    android:id="@+id/add_habit_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/guide_habit_name_hint"
@@ -85,6 +86,7 @@
                 android:paddingBottom="30dp">
 
                 <EditText
+                    android:id="@+id/add_habit_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/guide_habit_desc_hint"

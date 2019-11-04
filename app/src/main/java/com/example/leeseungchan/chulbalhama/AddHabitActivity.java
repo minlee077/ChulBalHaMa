@@ -1,11 +1,14 @@
 package com.example.leeseungchan.chulbalhama;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,16 +17,18 @@ import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.Adpater.prepareAdapter;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
+import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
-public class AddHabitActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddHabitActivity extends AppCompatActivity{
 
+    private TextView habitName;
+    private TextView habitDesc;
     // prepare
     private ArrayList<String> prepares = new ArrayList<>();
     // day and place
     private ArrayList<Boolean> days = new ArrayList<>();
-    private ArrayList<String> places = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,10 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        habitName = findViewById(R.id.add_habit_name);
+        habitDesc = findViewById(R.id.add_habit_desc);
+
 
         /* prepare */
         final LinearLayout prepare = findViewById(R.id.prepare);
@@ -103,17 +112,34 @@ public class AddHabitActivity extends AppCompatActivity implements View.OnClickL
         dayPlace.removeView(dayDelInputButton);
 
 
+        final Context context = this;
         Button store = findViewById(R.id.store_habit);
-        store.setOnClickListener(this);
+        store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HabitsVO habitsVO = new HabitsVO();
+                serializeHabit(habitsVO);
+                DBHelper helper = new DBHelper(context);
+                SQLiteDatabase db = helper.getWritableDatabase();
+                db.execSQL("insert into habits (habit_name, description, prepare) values(?,?,?)",new Object[]{habitsVO.getHabitName(), habitsVO.getDescription(), habitsVO.getPrepare()} );
+                Log.e("DB add", habitsVO.getHabitName() + habitsVO.getDescription() + habitsVO.getPrepare());
+                db.close();
+                finish();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.store_habit:
-                //@todo store habits.
-                finish();
-                break;
+    private void serializeHabit(HabitsVO habit){
+        String habitName = this.habitName.getText().toString();
+        String habitDesc = this.habitDesc.getText().toString();
+        StringBuffer prepare = new StringBuffer();
+        for(int i = 0; i < prepares.size(); i++){
+            prepare.append(prepares.get(i) + ",");
         }
+
+        habit.setHabitName(habitName);
+        habit.setDescription(habitDesc);
+        habit.setPrepare(prepare.toString());
     }
+
 }
