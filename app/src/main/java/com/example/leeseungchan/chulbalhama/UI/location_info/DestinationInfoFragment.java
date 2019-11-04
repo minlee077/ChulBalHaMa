@@ -4,6 +4,8 @@
 package com.example.leeseungchan.chulbalhama.UI.location_info;
 
 import android.app.TimePickerDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.DayTimeDialog;
 import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
@@ -31,11 +34,10 @@ import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
 
 import java.util.ArrayList;
 
-public class DestinationInfoFragment extends Fragment implements View.OnClickListener {
+public class DestinationInfoFragment extends Fragment{
 
     private ArrayList<Boolean> days = new ArrayList<>();
     private ArrayList<Integer> time = new ArrayList<>();
-    int hour, min;
 
     Bundle bundle = new Bundle();
 
@@ -53,12 +55,23 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
         bundle.putInt("type", 1);
 
-        /* destination setting view */
+        final EditText dest_name = v.findViewById(R.id.destination_name);
+        String name = ((LocationInfoActivity)getActivity()).getName();
+        if(name != null) {
+            dest_name.setText(((LocationInfoActivity) getActivity()).getName());
+        }
+        setNameListener(dest_name);
+
+        /* destination coordination view */
         LinearLayout destinationCord = v.findViewById(R.id.destination_setting);
 
         // destination TextView guide text
-        TextView destGuideText = destinationCord.findViewById(R.id.item_name);
-        destGuideText.setText(R.string.guide_address);
+        final TextView destGuideText = destinationCord.findViewById(R.id.item_name);
+        String address = bundle.getString("address");
+        if(address == null)
+            destGuideText.setText(R.string.guide_address);
+        else
+            destGuideText.setText(address);
 
         TextView destText = destinationCord.findViewById(R.id.item_description);
         destText.setVisibility(View.INVISIBLE);
@@ -89,7 +102,14 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
         // time TextView guide text
         final TextView timeGuideText = timeCord.findViewById(R.id.item_name);
-        timeGuideText.setText(R.string.guide_when_time);
+        final int time_hour = ((LocationInfoActivity) getActivity()).getTimeHour();
+        int time_minute = ((LocationInfoActivity) getActivity()).getTimeMin();
+
+        if(time_hour > 0 && time_minute > 0){
+            timeGuideText.setText(time_hour + "시간 " + time_minute + "분");
+        }else{
+            timeGuideText.setText(R.string.guide_when_time);
+        }
 
         TextView timeText = timeCord.findViewById(R.id.item_description);
         timeText.setVisibility(View.INVISIBLE);
@@ -106,8 +126,8 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
                                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        hour = hourOfDay;
-                        min = minute;
+                        ((LocationInfoActivity) getActivity()).setTimeHour(hourOfDay);
+                        ((LocationInfoActivity) getActivity()).setTimeMin(minute);
                         timeGuideText.setText(hourOfDay + "시간 " + minute + "분");
                     }
                 }, 0,0,false);
@@ -115,7 +135,6 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
                 dialog.show();
 
-                Toast.makeText(getContext(), "button clicked", Toast.LENGTH_SHORT).show();
             }
         });
         timeButton.setText(R.string.button_setting);
@@ -124,11 +143,16 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
         timeCord.removeView(timeDelButton);
 
 
+
         /* start time */
 
         // set 2d array for day and time
         LinearLayout dayInput = v.findViewById(R.id.day_input);
         final CustomSevenDayInfo sevenDayInfo = new CustomSevenDayInfo(dayInput);
+        ArrayList<String> isTempData = ((LocationInfoActivity) getActivity()).getDayOfWeekTime();
+        if(isTempData != null){
+            sevenDayInfo.setTempTimeData(isTempData);
+        }
 
         // set input layout
         LinearLayout destination = v.findViewById(R.id.destination_time_start);
@@ -147,7 +171,6 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
             public void onClick(View v) {
                 DayTimeDialog dayTimeDialog = new DayTimeDialog(getContext());
                 dayTimeDialog.callFunction(days, time, sevenDayInfo);
-                // @todo time-day dialog is needed && call cusromSevenDayInfo for updating
                 Toast.makeText(getContext(), "button clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -160,35 +183,35 @@ public class DestinationInfoFragment extends Fragment implements View.OnClickLis
 
         /* destination store */
         Button destinationStoreBtn = v.findViewById(R.id.store_destination);
-        destinationStoreBtn.setOnClickListener(this);
+        destinationStoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBHelper dbHelper = new DBHelper(v.getContext());
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                // destination
+                String sql = "insert into destinations(coordinate, time, destination_name) values(?,?,?)";
 
-        EditText dest_name = v.findViewById(R.id.destination_name);
-        String name = ((LocationInfoActivity)getActivity()).getName();
-        if(name != null) {
-            dest_name.setText(((LocationInfoActivity) getActivity()).getName());
-        }
-        setNameListener(dest_name);
+                String[] data = {
+                        destGuideText.getText().toString(),
+                        timeGuideText.getText().toString(),
+                        dest_name.getText().toString()
+                };
+                db.rawQuery(sql, data);
+                db.close();
+
+                // day
+                ArrayList<String> times = new ArrayList<>();
+                sevenDayInfo.setTimeToTime(times);
+                sevenDayInfo.storeTimeToDays(days,times);
+
+                getActivity().finish();
+            }
+        });
 
         return v;
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.store_destination) {
-            //@todo implement insert operation to "destination" table.
-            getActivity().finish();
-        }
-    }
 
-    private void setAdapter(int id, Spinner spinner) {
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                id, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-    }
 
     private void setNameListener(EditText edit){
         edit.addTextChangedListener(new TextWatcher() {

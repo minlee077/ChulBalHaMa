@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.leeseungchan.chulbalhama.UI.location_info.DestinationInfoFragment;
 import com.example.leeseungchan.chulbalhama.UI.location_info.StartingPointInfoFragment;
 
+import java.util.ArrayList;
+
 public class LocationInfoActivity extends AppCompatActivity{
 
     private FragmentManager fragmentManager;
@@ -25,6 +27,7 @@ public class LocationInfoActivity extends AppCompatActivity{
     private double longitude;
     private String name;
     private String description;
+    private ArrayList<String> dayOfWeekTime;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +37,12 @@ public class LocationInfoActivity extends AppCompatActivity{
         int data = intent.getIntExtra("type", 1);
 
         name = null;
-        latitude = 0;
-        longitude = 0;
+        latitude = -1;
+        longitude = -1;
         description = null;
-        timeHour = 0;
-        timeMin = 0;
+        timeHour = -1;
+        timeMin = -1;
+        dayOfWeekTime = null;
 
         // set up toolbar on top
         Toolbar toolbarMain = findViewById(R.id.toolbar_main);
@@ -121,5 +125,13 @@ public class LocationInfoActivity extends AppCompatActivity{
 
     public void setTimeMin(int timeMin) {
         this.timeMin = timeMin;
+    }
+
+    public ArrayList<String> getDayOfWeekTime() {
+        return dayOfWeekTime;
+    }
+
+    public void setDayOfWeekTime(ArrayList dayOfWeekTime) {
+        this.dayOfWeekTime = dayOfWeekTime;
     }
 }

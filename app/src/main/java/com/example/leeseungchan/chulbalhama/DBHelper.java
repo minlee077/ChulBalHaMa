@@ -4,11 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.TextView;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final int DB_VERSION =2;
+    public static final int DB_VERSION =5;
     //스키마 변경 및 수정시에 DB_VERSION 바꿔주기
 
     public DBHelper(Context context){
@@ -19,7 +22,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String userTable = "CREATE TABLE user ("+
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "starting_coordinate,"+
+                "starting_coordinate text,"+
+                "starting_name text," +
                 "name default 'johndoe')";
 
         String destinationsTable = "CREATE TABLE destinations(" +
@@ -38,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String dayOfWeekTable = "CREATE TABLE day_of_week("+
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "day not null," +
-                "departure_time," +
+                "departure_time text," +
                 "destination_id integer," +
                 "habit_id integer," +
                 "FOREIGN KEY(destination_id) REFERENCES destinations(_id)," +
@@ -68,6 +72,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(srbaiTable);
 
 
+
+
         //생성된 table 확인
         Cursor c = sqLiteDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         if (c.moveToFirst()) {
@@ -77,7 +83,6 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         Log.e("Database Creation", "onCreate: schema created");
-
     }
 
     @Override
@@ -93,8 +98,24 @@ public class DBHelper extends SQLiteOpenHelper {
             onCreate(sqLiteDatabase);
             Log.e("DB drop", "onUpgrade: schema renewed");
         }
-
-
-
     }
+
+    public void setDays(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] dayName = {"월", "화","수", "목", "금", "토", "일"};
+        for(int i = 0; i < 7; i++){
+            db.execSQL("insert into day_of_week (day) values(?)",new Object[]{dayName[i]} );
+        }
+        db.close();
+    }
+
+    public void setUser(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "insert into user(name, starting_coordinate, starting_name) values(?,?,?)";
+        db.execSQL(sql, new String[]{"이름을 변경하세요", "흑석로 헤헤 히히","우리집"});
+        db.close();
+    }
+
+
+
 }

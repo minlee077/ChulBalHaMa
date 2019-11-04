@@ -1,5 +1,6 @@
 package com.example.leeseungchan.chulbalhama.UI.location_info;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
@@ -36,7 +38,7 @@ public class StartingPointInfoFragment extends Fragment {
 
         bundle.putInt("type", 0);
 
-        EditText start_name = v.findViewById(R.id.starting_name);
+        final EditText start_name = v.findViewById(R.id.starting_name);
         String name = ((LocationInfoActivity)getActivity()).getName();
 
         if(name != null) {
@@ -48,7 +50,7 @@ public class StartingPointInfoFragment extends Fragment {
         LinearLayout destinationCord = v.findViewById(R.id.starting_setting);
 
         // starting TextView guide text
-        TextView destGuideText = destinationCord.findViewById(R.id.item_name);
+        final TextView destGuideText = destinationCord.findViewById(R.id.item_name);
         String address = bundle.getString("address");
         if(address == null)
             destGuideText.setText(R.string.guide_address);
@@ -80,10 +82,16 @@ public class StartingPointInfoFragment extends Fragment {
 
 
         /* starting store */
-        Button destinationStoreBtn = v.findViewById(R.id.store_starting);
-        destinationStoreBtn.setOnClickListener(new View.OnClickListener() {
+        Button startStoreBtn = v.findViewById(R.id.store_starting);
+        startStoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DBHelper dbHelper = new DBHelper(v.getContext());
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String sql = "update user set starting_name=\""+start_name.getText().toString() +
+                        "\", starting_coordinate=\""+destGuideText.getText().toString() + "\" where _id=1";
+                db.execSQL(sql);
+                db.close();
                 getActivity().finish();
             }
         });

@@ -1,5 +1,6 @@
 package com.example.leeseungchan.chulbalhama;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -26,11 +27,14 @@ public class MainActivity extends AppCompatActivity
     private PersonalInfoFragment personalInfoFragment;
     private FragmentTransaction transaction;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DBHelper dbHelper = new DBHelper(this);
+//        dbHelper.setDays();
+//        dbHelper.setUser();
 
         // set up toolbar on top
         Toolbar toolbarMain = findViewById(R.id.toolbar_main);

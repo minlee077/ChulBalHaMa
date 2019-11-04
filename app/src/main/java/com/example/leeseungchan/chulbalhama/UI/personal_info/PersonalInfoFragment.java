@@ -1,8 +1,11 @@
 package com.example.leeseungchan.chulbalhama.UI.personal_info;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 
@@ -34,12 +39,18 @@ public class PersonalInfoFragment extends Fragment{
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
 
+        final DBHelper dbHelper = new DBHelper(getContext());
+
         /* name */
         LinearLayout name = v.findViewById(R.id.info_name);
 
         // @todo need to get name data from db
         final TextView textName = name.findViewById(R.id.item_name);
-        textName.setText("Example");
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor =  db.rawQuery("select name from user order by _id", null);
+        cursor.moveToNext();
+        textName.setText(cursor.getString(0));
+        db.close();
 
         TextView nameDesc = name.findViewById(R.id.item_description);
         nameDesc.setVisibility(View.INVISIBLE);
@@ -62,8 +73,11 @@ public class PersonalInfoFragment extends Fragment{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        String nameInput = input.getText().toString();
-                        textName.setText(nameInput);
+                        String newName = input.getText().toString();
+                        SQLiteDatabase db = dbHelper.getReadableDatabase();
+                        db.execSQL("update user set name=\""+ newName + "\" where _id=1");
+                        db.close();
+                        Log.e("name input", "onClick:" + newName);
                     }
                 });
 
@@ -86,14 +100,19 @@ public class PersonalInfoFragment extends Fragment{
         /* start point */
         LinearLayout startPoint = v.findViewById(R.id.info_start);
 
-        // @todo need to get start point name data from db
-        TextView startPointName = startPoint.findViewById(R.id.item_name);
-        startPointName.setText("Example");
+        SQLiteDatabase db2 = dbHelper.getReadableDatabase();
+        String sql = "select starting_name, starting_coordinate from user order by _id";
+        Cursor cursor2 =  db2.rawQuery(sql, null);
+        cursor2.moveToNext();
 
-        // @todo need to get start point description data from db
+        TextView startPointName = startPoint.findViewById(R.id.item_name);
+        startPointName.setText(cursor2.getString(0));
+
         TextView startPointDesc = startPoint.findViewById(R.id.item_description);
         startPointDesc.setEnabled(false);
-        startPointDesc.setText("location");
+        startPointDesc.setText(cursor2.getString(1));
+
+        db2.close();
 
         Button startPointChangeBtn = startPoint.findViewById(R.id.button_change);
         startPointChangeBtn.setText(R.string.button_change);
@@ -137,7 +156,6 @@ public class PersonalInfoFragment extends Fragment{
         //@todo need to setup adapter to destinationRecycler.
 
         fragmentManager = getActivity().getSupportFragmentManager();
-
         return v;
     }
 
