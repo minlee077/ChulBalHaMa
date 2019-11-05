@@ -15,11 +15,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
+import com.example.middemo.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.middemo.MainActivity.StartWorker;
@@ -31,67 +34,79 @@ public class TestWorker extends Worker {
     Notification notification;
     NotificationManager manager;
     Context mContext;
+    AppCompatActivity actContext;
 
-    public TestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams)
-    {
+//    MainActivity mainActivity;
+
+
+    public static int called = 0;
+
+    public TestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         mContext = context;
     }
 
     @NonNull
     @Override
-    public Result doWork()
-    {
+    public Result doWork() {
         Log.d("workManager", "TestWorker::doWork() called ");
         // Start new worker
 
         // 작업 수행
-
-
-        createNotificationChannel();
-        showNotification();
-        manager.notify(1, notification);
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Run your task here
-                Toast.makeText(mContext, "BackGround Service running...", Toast.LENGTH_SHORT).show();
+                called++;
+                String str = "BackGround Service running... " + called;
+                Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
+                if (called == 5) {
+
+                    Toast.makeText(mContext, "in the if statement", Toast.LENGTH_SHORT).show();
+                    //mContext.
+//                    Toast.makeText(mContext, "after mainActivity called", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent( mContext ,MainActivity.class);
+                    mContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+//                     manager.notify(1, notification);
+                }
             }
-        },0);;
+        }, 0);
 
 
+        if (called >= 5)
+            return Result.success();
 
         StartWorker(); // 재귀 생성
-
         //needs to be retried at a later time via Result.retry() 실패시 처리 필요 예상
 
         return Result.success();
 
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
+//    private void createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel serviceChannel = new NotificationChannel(
+//                    CHANNEL_ID,
+//                    "Foreground Service Channel",
+//                    NotificationManager.IMPORTANCE_DEFAULT
+//            );
+//
+//            notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID) //CHANNEL_ID 채널에 지정한 아이디
+//                    .setContentTitle("background machine")
+//                    .setContentText("알림입니다")
+//                    .setSmallIcon(R.mipmap.ic_launcher_round)
+//                    .setOngoing(true).build();
+//
+//            manager = getApplicationContext().getSystemService(NotificationManager.class);
+//            manager.createNotificationChannel(serviceChannel);
+//        }
+//    }
 
-            notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID) //CHANNEL_ID 채널에 지정한 아이디
-                    .setContentTitle("background machine")
-                    .setContentText("알림입니다")
-                    .setSmallIcon(R.mipmap.ic_launcher_round)
-                    .setOngoing(true).build();
-
-            manager = getApplicationContext().getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
-        }
-    }
-
-    private void showNotification()
-    {
+    public void showNotification() {
         Context context = getApplicationContext();
         //Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         // Intent being called when clicking on the notification
@@ -113,7 +128,7 @@ public class TestWorker extends Worker {
                 // second line of text in the platform notification template
                 .setContentText("This is description")
                 // some additional information displayed in the notification, provided by the app
-                .setSubText( "This is subtitle")
+                .setSubText("This is subtitle")
                 // Big messages
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Big message"))
                 // small piece of additional information pertaining to this notification

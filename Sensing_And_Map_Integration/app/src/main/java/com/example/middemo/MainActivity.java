@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.Constraints;
@@ -15,6 +16,9 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -88,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         mBroadcastReceiver = new ActivityDetectionBroadcastReceiver();
         buildGoogleApiClient();
@@ -503,6 +506,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     {
         Log.d("mwm", "MainActivity::StartWorker()");
 
+
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
@@ -512,14 +516,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build();
-
         //종료
         //WorkRequest.Builder.setBackoffCriteria(BackoffPolicy, 시간, 시간단위).
-
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(TestWorker.class)
                 .setConstraints(constraints)
                 .addTag("myRequest")
-                .setInitialDelay(5, TimeUnit.SECONDS)
+                .setInitialDelay(2, TimeUnit.SECONDS)
                 .build();
 
         //        .setBackoffCriteria(
@@ -537,7 +539,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //                .build();
         //.addTag("xx")
 
-        //work policyh : ttps://developer.android.com/reference/androidx/work/ExistingWorkPolicy.html
+        //work policy : https://developer.android.com/reference/androidx/work/ExistingWorkPolicy.html
         WorkManager.getInstance().enqueueUniqueWork("uniqueWork", ExistingWorkPolicy.REPLACE,workRequest);
     }
+
+    public static final String CHANNEL_ID = "ForegroundServiceChannel";
+    Notification notification;
+    NotificationManager manager;
+    public void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Foreground Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+
+            notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID) //CHANNEL_ID 채널에 지정한 아이디
+                    .setContentTitle("background machine")
+                    .setContentText("알림입니다")
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setOngoing(true).build();
+
+            manager = getApplicationContext().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
+        }
+
+    }
+
+
 }

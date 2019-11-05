@@ -16,7 +16,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
+        class that extends Application ^^^>
         <activity android:name=".DetectedActivitiesIntentService"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -27,6 +29,8 @@
         </activity>
         <service android:name=".DetectedActivitiesIntentService"
             android:exported="false" />
+
+
     </application>
 
 </manifest>
