@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.Adpater.prepareAdapter;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
+import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;

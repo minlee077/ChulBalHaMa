@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_main) {
             if(!habitListFragment.isAdded()){
-                replaceFragment(habitListFragment);
+                replaceFragment(habitListFragment, "habit_list");
                 setTitle(R.string.app_name);
             }
         } else if (id == R.id.nav_info) {
             if(!personalInfoFragment.isAdded()){
-                replaceFragment(personalInfoFragment);
+                replaceFragment(personalInfoFragment, "personal_info");
                 setTitle(R.string.title_personal);
             }
         }
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment, String tag){
         transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, fragment)
+        transaction.replace(R.id.nav_host_fragment, fragment, tag)
                 .commitNowAllowingStateLoss();
     }
 

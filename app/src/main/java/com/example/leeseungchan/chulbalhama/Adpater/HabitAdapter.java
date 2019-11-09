@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.leeseungchan.chulbalhama.ItemHabit;
 import com.example.leeseungchan.chulbalhama.R;
+import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHolder> {
 
-    private ArrayList<ItemHabit> mDataSet = new ArrayList<>();
+    private ArrayList<HabitsVO> mDataSet = new ArrayList<>();
 
     // ViewHolder
     public static class HabitViewHolder extends RecyclerView.ViewHolder{
@@ -29,8 +29,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
             habitDescription = v.findViewById(R.id.item_habit_description);
         }
 
-        public void setHabit(ItemHabit itemHabit){
-            habitName.setText(itemHabit.getName());
+        public void setHabit(HabitsVO itemHabit){
+            habitName.setText(itemHabit.getHabitName());
             habitDescription.setText(itemHabit.getDescription());
         }
     }
@@ -38,8 +38,11 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
     public HabitAdapter(){
         // empty constructor
     }
+    public HabitAdapter(ArrayList<HabitsVO> items){
+        mDataSet = items;
+    }
 
-    public void addHabit(ItemHabit itemHabit){
+    public void addHabit(HabitsVO itemHabit){
         mDataSet.add(itemHabit);
     }
 
@@ -55,7 +58,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
 
     @Override
     public void onBindViewHolder(HabitViewHolder holder, int position){
-        ItemHabit item = mDataSet.get(position);
+        HabitsVO item = mDataSet.get(position);
         holder.setHabit(item);
     }
 

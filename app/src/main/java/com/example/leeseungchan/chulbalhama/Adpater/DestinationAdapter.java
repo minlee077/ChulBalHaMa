@@ -1,6 +1,7 @@
 package com.example.leeseungchan.chulbalhama.Adpater;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
+import com.example.leeseungchan.chulbalhama.VO.DestinationsVO;
 
 import java.util.ArrayList;
 
-public class destinationAdapter extends RecyclerView.Adapter<destinationAdapter.ListViewHolder>{
+public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.ListViewHolder>{
 
-    private ArrayList<String> mData = null;
+    private ArrayList<DestinationsVO> mData = null;
+    private Context context;
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
         TextView item_name ;
@@ -39,34 +42,37 @@ public class destinationAdapter extends RecyclerView.Adapter<destinationAdapter.
                     notifyDataSetChanged();
                     DBHelper dbHelper = new DBHelper(itemView.getContext());
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    String sql = "delete destinations where _id=" + (id+1);
+                    String sql = "delete from destinations where _id=" + "\""+ id + "\"";
                     db.execSQL(sql);
                     db.close();
                 }
             });
+
+            context = itemView.getContext();
         }
     }
 
-    public destinationAdapter(ArrayList<String> list) {
+    public DestinationAdapter(ArrayList<DestinationsVO> list) {
         mData = list ;
+        this.notifyDataSetChanged();
     }
-    public destinationAdapter(){}
+    public DestinationAdapter(){}
 
     @Override
-    public destinationAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext() ;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
+    public DestinationAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
         View view = inflater.inflate(R.layout.item_list_change_delete, parent, false) ;
-        destinationAdapter.ListViewHolder vh = new destinationAdapter.ListViewHolder(view) ;
+        DestinationAdapter.ListViewHolder vh = new DestinationAdapter.ListViewHolder(view) ;
 
         return vh ;
     }
 
     @Override
-    public void onBindViewHolder(destinationAdapter.ListViewHolder holder, int position) {
-        String text = mData.get(position) ;
-        holder.item_name.setText(text) ;
+    public void onBindViewHolder(DestinationAdapter.ListViewHolder holder, int position) {
+        DestinationsVO destination = mData.get(position) ;
+        holder.item_name.setText(destination.getDestinationName()) ;
     }
 
     @Override
@@ -76,7 +82,8 @@ public class destinationAdapter extends RecyclerView.Adapter<destinationAdapter.
         return mData.size() ;
     }
 
-    public void addList(String name){
+
+    public void addList(DestinationsVO name){
         mData.add(name);
     }
 

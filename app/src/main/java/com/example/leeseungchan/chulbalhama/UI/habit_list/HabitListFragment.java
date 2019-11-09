@@ -1,10 +1,15 @@
 package com.example.leeseungchan.chulbalhama.UI.habit_list;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,13 +19,16 @@ import android.widget.Button;
 
 import com.example.leeseungchan.chulbalhama.AddHabitActivity;
 import com.example.leeseungchan.chulbalhama.Adpater.HabitAdapter;
-import com.example.leeseungchan.chulbalhama.ItemHabit;
+import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
+import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
+
+import java.util.ArrayList;
 
 
 public class HabitListFragment extends Fragment {
-
-
+    public static Context mContext;
+    ArrayList <HabitsVO> habits = new ArrayList<>();
 
     @Nullable
     @Override
@@ -36,10 +44,10 @@ public class HabitListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         RecyclerView.Adapter mAdapter;
-        mAdapter = new HabitAdapter();
-        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("영단어 외우기", "하루 20개 영단어 외우기"));
-        ((HabitAdapter) mAdapter).addHabit(new ItemHabit("책 읽기", "하루 10쪽이상 읽기"));
+        mAdapter = new HabitAdapter(habits);
         recyclerView.setAdapter(mAdapter);
+
+        retrieve();
 
         // set add button
         Button habitAddButton = v.findViewById(R.id.add);
@@ -51,6 +59,27 @@ public class HabitListFragment extends Fragment {
             }
         });
 
+        mContext = getContext();
+
         return v;
+    }
+
+    public void retrieve(){
+        habits.clear();
+
+        DBHelper dbHelper = new DBHelper(getContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "select habit_name, description from habits";
+        Cursor c = db.rawQuery(sql, null);
+        while(c.moveToNext()){
+            String name = c.getString(0);
+            String desc = c.getString(1);
+
+            HabitsVO h = new HabitsVO();
+            h.setHabitName(name);
+            h.setDescription(desc);
+
+            habits.add(h);
+        }
     }
 }

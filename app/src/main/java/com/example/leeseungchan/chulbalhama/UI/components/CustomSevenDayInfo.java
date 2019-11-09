@@ -58,10 +58,24 @@ public class CustomSevenDayInfo {
     }
 
     public void setPlace(){
-        for (int i = 0; i < 7; i++) {
-            dayInputs.get(i).findViewById(R.id.day_place).setVisibility(View.VISIBLE);
-            //@todo db 연동으로 글자 띄워와야함.
+
+//        DBHelper helper = new DBHelper(view.getContext());
+//        SQLiteDatabase db = helper.getReadableDatabase();
+//        Cursor cursor =
+//                db.rawQuery("select destination_name from destinations where _id=(select destination_id from day_of_week)", null);
+
+        for(int i = 0; i < 7; i++){
+//            cursor.moveToNext();
+//            String time = cursor.getString(0);
+
+            TextView temp = dayInputs.get(i).findViewById(R.id.day_place);
+//            if(time != null) {
+//                temp.setVisibility(View.VISIBLE);
+//                temp.setText(time);
+//                Log.e("DB add", " time: " + time);
+//            }
         }
+//        db.close();
     }
 
     private void setTimeData(){

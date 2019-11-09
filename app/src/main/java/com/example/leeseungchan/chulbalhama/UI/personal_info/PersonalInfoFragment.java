@@ -1,7 +1,6 @@
 package com.example.leeseungchan.chulbalhama.UI.personal_info;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,16 +21,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.leeseungchan.chulbalhama.Adpater.DestinationAdapter;
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
+import com.example.leeseungchan.chulbalhama.VO.DestinationsVO;
+import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
+
+import java.util.ArrayList;
 
 public class PersonalInfoFragment extends Fragment{
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
+    private ArrayList<DestinationsVO> destinations = new ArrayList<>();
 
     @Nullable
     @Override
@@ -153,10 +157,44 @@ public class PersonalInfoFragment extends Fragment{
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         destinationRecycler.setLayoutManager(layoutManager);
-        //@todo need to setup adapter to destinationRecycler.
+
+        RecyclerView.Adapter mAdapter;
+        mAdapter = new DestinationAdapter(destinations);
+        destinationRecycler.setAdapter(mAdapter);
+
+        retrieve();
 
         fragmentManager = getActivity().getSupportFragmentManager();
         return v;
+    }
+
+    private void setData(ArrayList<String> data){
+        DBHelper dbHelper = new DBHelper(getContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select destination_name from destinations", null);
+        Log.e("isnull?", " cursor " + cursor);
+        while(cursor.moveToNext()){
+            data.add(cursor.getString(0));
+        }
+        db.close();
+    }
+    public void retrieve(){
+        destinations.clear();
+        DBHelper dbHelper = new DBHelper(getContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "select destination_name from destinations";
+        Cursor c = db.rawQuery(sql, null);
+        while(c.moveToNext()){
+
+            System.out.println("heelo");
+            String name = c.getString(0);
+
+            DestinationsVO h = new DestinationsVO();
+            h.setDestinationName(name);
+
+            destinations.add(h);
+        }
     }
 
 }
