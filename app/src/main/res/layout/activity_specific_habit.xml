@@ -1,101 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/toolbars"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_gravity="center"
             android:textColor="@color/colorAccent"
             android:textSize="30sp"
-            android:layout_gravity="center"
-            />
+            android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-            <LinearLayout
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+
+            <!-- habit name -->
+            <TextView
+                style="@style/MenuText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="30dp"
-                >
+                android:text="@string/setting_name" />
+
+            <include
+                android:id="@+id/name_setting"
+                layout="@layout/item_list_change_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_space_small" />
 
 
-                <!-- habit name -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/setting_name"
-                    style="@style/MenuText"/>
+            <!-- habit description -->
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_destination" />
 
-                <include
-                    android:id="@+id/name_setting"
-                    layout="@layout/item_list_change_delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/content_space_small"/>
-
-
-                <!-- habit description -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/setting_destination"
-                    style="@style/MenuText"/>
-
-                <include
-                    android:id="@+id/desc_setting"
-                    layout="@layout/item_list_change_delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/content_space_small"/>
+            <include
+                android:id="@+id/desc_setting"
+                layout="@layout/item_list_change_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_space_small" />
 
 
-                <!-- prepare things -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/guide_ask_prepare"
-                    style="@style/MenuText"/>
+            <!-- prepare things -->
+            <TextView
+                style="@style/MenuText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_ask_prepare" />
 
-                <include
-                    android:id="@+id/prepare_setting"
-                    layout="@layout/item_list_change_delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/content_space_small"/>
+            <include
+                android:id="@+id/prepare_setting"
+                layout="@layout/fragment_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_space_small" />
 
-                <!-- day and place input -->
 
-                <include
-                    android:id="@+id/add_habit_intro"
-                    layout="@layout/item_list_change_delete"/>
+            <!-- day and place input -->
+            <include
+                android:id="@+id/day_setting"
+                layout="@layout/item_list_change_delete" />
 
-                <View android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin" />
 
-                <include
-                    android:id="@+id/add_habit_day"
-                    layout="@layout/item_seven_day_boxes"/>
+            <include
+                android:id="@+id/add_habit_day"
+                layout="@layout/item_seven_day_boxes" />
 
-                <!-- reply history -->
+            <!-- reply history -->
+            <include layout="@layout/radiogroup_ten_inputs" />
 
-            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="507dp" />
 
 </android.support.constraint.ConstraintLayout>

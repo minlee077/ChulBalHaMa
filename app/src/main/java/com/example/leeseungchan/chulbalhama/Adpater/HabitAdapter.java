@@ -22,7 +22,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
     private ArrayList<HabitsVO> mDataSet = new ArrayList<>();
 
     // ViewHolder
-    public static class HabitViewHolder extends RecyclerView.ViewHolder{
+    public class HabitViewHolder extends RecyclerView.ViewHolder{
         public TextView habitName;
         public TextView habitDescription;
         LinearLayout habitList;
@@ -34,6 +34,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), HabitSpecActivity.class);
+                    HabitsVO habit = getHabit(getAdapterPosition());
+                    intent.putExtra("habit", habit);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -83,5 +85,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
         int id = mDataSet.get(position).getId();
         //@todo delete thing
         mDataSet.remove(position);
+    }
+
+    private HabitsVO getHabit(int position){
+        return mDataSet.get(position);
     }
 }

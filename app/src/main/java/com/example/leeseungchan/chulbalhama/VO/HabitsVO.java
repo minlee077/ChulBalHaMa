@@ -1,11 +1,23 @@
 package com.example.leeseungchan.chulbalhama.VO;
 
-public class HabitsVO {
+import java.io.Serializable;
+
+public class HabitsVO implements Serializable {
     int id;
     String habitName;
     String description;
     String prepare;
     int achievementRate;
+
+    public HabitsVO(){}
+
+    public HabitsVO(int id, String habitName, String habitDesc, String prepare, int achievementRate){
+        this.id = id;
+        this.habitName = habitName;
+        this.description = habitDesc;
+        this.prepare = prepare;
+        this.achievementRate = achievementRate;
+    }
 
     public int getId(){
         return id;

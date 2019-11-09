@@ -3,6 +3,7 @@ package com.example.leeseungchan.chulbalhama.Activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,26 +20,32 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.leeseungchan.chulbalhama.Adpater.HabitAdapter;
 import com.example.leeseungchan.chulbalhama.Adpater.PrepareAdapter;
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.DayDialog;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
+import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
 public class HabitSpecActivity  extends AppCompatActivity {
-    // prepare
-    private ArrayList<String> prepares = new ArrayList<>();
-    // day and place
+
+    private HabitsVO habit;
+    private DBHelper dbHelper;
+    private Context context;
+    private ArrayList<String> prepare = new ArrayList<>();
     private ArrayList<Boolean> days = new ArrayList<>();
-    private DBHelper dbHelper = new DBHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_habit);
-        TextView guideText;
+        dbHelper = new DBHelper(this);
+        habit = (HabitsVO) getIntent().getSerializableExtra("habit");
+        context = this;
+
         // set up toolbar on top
         Toolbar toolbarMain = findViewById(R.id.toolbar);
         setSupportActionBar(toolbarMain);
@@ -48,71 +55,65 @@ public class HabitSpecActivity  extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         /* habit name */
+        LinearLayout habitName = findViewById(R.id.name_setting);
+        TextView nameText = habitName.findViewById(R.id.item_name);
+        nameText.setText(habit.getHabitName());
+        Button nameChange = habitName.findViewById(R.id.button_change);
+        nameChange.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                setNameDialog(context, v, "이름 바꾸기");
+            }
+        });
+        Button nameDelete = habitName.findViewById(R.id.button_delete);
+        nameDelete.setVisibility(View.GONE);
+
+        /* habit desc */
+        LinearLayout habitDesc = findViewById(R.id.desc_setting);
+        TextView descText = habitDesc.findViewById(R.id.item_name);
+        descText.setText(habit.getHabitName());
+        Button descChange = habitDesc.findViewById(R.id.button_change);
+        descChange.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                setNameDialog(context, v, "설명 바꾸기");
+            }
+        });
+        Button descDelete = habitDesc.findViewById(R.id.button_delete);
+        descDelete.setVisibility(View.GONE);
+
+        /* prepare list*/
+        RecyclerView prepares = findViewById(R.id.list);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        prepares.setLayoutManager(layoutManager);
+
+        RecyclerView.Adapter prepareAdapter = new PrepareAdapter(prepare);
+        prepares.setAdapter(prepareAdapter);
+
+        setPrepare(habit.getPrepare());
+
+        /* habit days */
+        LinearLayout habitday = findViewById(R.id.day_setting);
 
 
-//        /* prepare */
-//        final LinearLayout prepare = findViewById(R.id.prepare);
-//
-//        // prepare TextView guide text
-//        guideText = prepare.findViewById(R.id.guide_for_selection);
-//        guideText.setText(R.string.guide_ask_prepare);
-//
-//        // prepare recycler view
-//        final RecyclerView prepareRecycle = prepare.findViewById(R.id.list);
-//
-//        RecyclerView.LayoutManager layoutManager;
-//        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        prepareRecycle.setLayoutManager(layoutManager);
-//
-//        final RecyclerView.Adapter prepareAdapter = new PrepareAdapter(prepares);
-//        prepareRecycle.setAdapter(prepareAdapter);
-//
-//        Button prepareInputButton = prepare.findViewById(R.id.button_for_selection);
-//        prepareInputButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditText text = prepare.findViewById(R.id.input_for_selection);
-//                if (text.getText().toString().length() < 1) {
-//                    text.setHint("1자 이상 입력해주세요");
-//                    text.setHintTextColor(Color.RED);
-//                } else {
-//                    prepares.add(text.getText().toString());
-//                    text.setText("");
-//                    text.setHint("여기에 입력해 주세요.");
-//                    text.setHintTextColor(Color.GRAY);
-//                    prepareAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//
-//
-//        /* day and place input*/
-//        final LinearLayout dayPlace = findViewById(R.id.add_habit_intro);
-//
-//        final CustomSevenDayInfo customSevenDayInfo =
-//                new CustomSevenDayInfo(findViewById(R.id.add_habit_day));
-//        customSevenDayInfo.setPlace();
-//
-//        // day and place TextView guide text
-//        guideText = dayPlace.findViewById(R.id.item_name);
-//        guideText.setText(R.string.guide_date_and_place_intro);
-//
-//        TextView text = dayPlace.findViewById(R.id.item_description);
-//        text.setVisibility(View.INVISIBLE);
-//
-//        // day and place Button to add
-//        Button dayPlaceInputButton = dayPlace.findViewById(R.id.button_change);
-//        dayPlaceInputButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DayDialog customDialog = new DayDialog(HabitSpecActivity.this);
-//
-//                customDialog.callFunction(days, customSevenDayInfo);
-//            }
-//        });
-//
-//        Button dayDelInputButton = dayPlace.findViewById(R.id.button_delete);
-//        dayPlace.removeView(dayDelInputButton);
+        final CustomSevenDayInfo customSevenDayInfo =
+                new CustomSevenDayInfo(findViewById(R.id.add_habit_day));
+        customSevenDayInfo.setPlace();
+
+        TextView dayText = habitday.findViewById(R.id.item_name);
+        dayText.setText(habit.getHabitName());
+        Button dayChange = habitday.findViewById(R.id.button_change);
+        dayChange.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                DayDialog customDialog = new DayDialog(HabitSpecActivity.this);
+
+                customDialog.callFunction(days, customSevenDayInfo);
+            }
+        });
+        Button dayDelete = habitday.findViewById(R.id.button_delete);
+        dayDelete.setVisibility(View.GONE);
 
     }
     public void setNameDialog(Context context, View v, String title){
@@ -146,4 +147,16 @@ public class HabitSpecActivity  extends AppCompatActivity {
 
         builder.show();
     }
+
+    private void setPrepare(String prepare){
+        String[] prepares = prepare.split(",");
+
+        this.prepare.clear();
+
+        for(int i=0; i<prepares.length; i++){
+            this.prepare.add(prepares[i]);
+        }
+
+    }
+
 }

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         DBHelper dbHelper = new DBHelper(this);
 //        dbHelper.setDays();
 //        dbHelper.setUser();
-
+        setMain();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
