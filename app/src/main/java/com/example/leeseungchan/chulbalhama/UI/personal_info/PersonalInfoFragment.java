@@ -35,13 +35,14 @@ public class PersonalInfoFragment extends Fragment{
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private ArrayList<DestinationsVO> destinations = new ArrayList<>();
-    private DBHelper dbHelper = new DBHelper(getContext());
+    private DBHelper dbHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
+        dbHelper = new DBHelper(getContext());
 
         /* name */
         LinearLayout name = v.findViewById(R.id.info_name);
@@ -138,17 +139,6 @@ public class PersonalInfoFragment extends Fragment{
         return v;
     }
 
-    private void setData(ArrayList<String> data){
-        DBHelper dbHelper = new DBHelper(getContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("select destination_name from destinations", null);
-        Log.e("isnull?", " cursor " + cursor);
-        while(cursor.moveToNext()){
-            data.add(cursor.getString(0));
-        }
-        db.close();
-    }
     public void retrieve(){
         destinations.clear();
         DBHelper dbHelper = new DBHelper(getContext());
@@ -157,7 +147,6 @@ public class PersonalInfoFragment extends Fragment{
         Cursor c = db.rawQuery(sql, null);
         while(c.moveToNext()){
 
-            System.out.println("heelo");
             String name = c.getString(0);
 
             DestinationsVO h = new DestinationsVO();

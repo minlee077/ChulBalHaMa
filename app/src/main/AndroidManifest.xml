@@ -38,6 +38,9 @@
         <activity android:name=".Activities.HabitSpecActivity"
             android:parentActivityName=".Activities.MainActivity"
             />
+        <activity android:name=".Activities.StartActivity"
+            android:parentActivityName=".Activities.MainActivity"
+            />
     </application>
 
 </manifest>

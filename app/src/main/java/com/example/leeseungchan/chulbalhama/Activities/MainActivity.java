@@ -1,8 +1,11 @@
 package com.example.leeseungchan.chulbalhama.Activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +22,7 @@ import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragment;
+import com.example.leeseungchan.chulbalhama.UI.start.StartFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -28,6 +32,10 @@ public class MainActivity extends AppCompatActivity
     private HabitListFragment habitListFragment;
     private PersonalInfoFragment personalInfoFragment;
     private FragmentTransaction transaction;
+    public SharedPreferences prefs;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +43,43 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         DBHelper dbHelper = new DBHelper(this);
+        prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 //        dbHelper.setDays();
 //        dbHelper.setUser();
 
+        setMain();
+
+        checkFirstRun();
+    }
+
+    private void setMain(){
+        // set up toolbar on top
+        Toolbar toolbarMain = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbarMain);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // drawable
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbarMain, R.string.openDrawerNavigation,R.string.closeDrawerNavigation);
+
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        fragmentManager = getSupportFragmentManager();
+        habitListFragment = new HabitListFragment();
+        personalInfoFragment = new PersonalInfoFragment();
+
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, habitListFragment).commitAllowingStateLoss();
+
+        setTitle(R.string.app_name);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -74,34 +116,18 @@ public class MainActivity extends AppCompatActivity
         title.setText(id);
     }
 
-    private void setMain(){
-        // set up toolbar on top
-        Toolbar toolbarMain = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbarMain);
+    public void checkFirstRun(){
+        boolean isFirstRun = prefs.getBoolean("isFirstRun",true);
+        // for test
+        isFirstRun = true;
+        if(isFirstRun)
+        {
+            Intent newIntent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(newIntent);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // drawable
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbarMain, R.string.openDrawerNavigation,R.string.closeDrawerNavigation);
-
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        fragmentManager = getSupportFragmentManager();
-        habitListFragment = new HabitListFragment();
-        personalInfoFragment = new PersonalInfoFragment();
-
-        transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, habitListFragment).commitAllowingStateLoss();
-
-        setTitle(R.string.app_name);
+            prefs.edit().putBoolean("isFirstRun",false).apply();
+            //처음만 true 그다음부터는 false 바꾸는 동작
+        }
     }
 
 }
