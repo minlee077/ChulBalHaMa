@@ -1,4 +1,4 @@
-package com.example.leeseungchan.chulbalhama;
+package com.example.leeseungchan.chulbalhama.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 
+import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.location_info.DestinationInfoFragment;
 import com.example.leeseungchan.chulbalhama.UI.location_info.StartingPointInfoFragment;
 

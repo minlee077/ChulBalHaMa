@@ -2,14 +2,12 @@ package com.example.leeseungchan.chulbalhama.UI.components;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.DBHelper;
-import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
 
 import java.util.ArrayList;
@@ -59,23 +57,24 @@ public class CustomSevenDayInfo {
 
     public void setPlace(){
 
-//        DBHelper helper = new DBHelper(view.getContext());
-//        SQLiteDatabase db = helper.getReadableDatabase();
-//        Cursor cursor =
-//                db.rawQuery("select destination_name from destinations where _id=(select destination_id from day_of_week)", null);
+        DBHelper helper = new DBHelper(view.getContext());
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String sql =
+                "select destination_name from destinations where _id=(select destination_id from day_of_week)";
+        Cursor cursor = db.rawQuery(sql, null);
 
         for(int i = 0; i < 7; i++){
-//            cursor.moveToNext();
-//            String time = cursor.getString(0);
-
+            String time;
             TextView temp = dayInputs.get(i).findViewById(R.id.day_place);
-//            if(time != null) {
-//                temp.setVisibility(View.VISIBLE);
-//                temp.setText(time);
-//                Log.e("DB add", " time: " + time);
-//            }
+            temp.setVisibility(View.VISIBLE);
+
+            if(cursor.moveToNext()) {
+                time = cursor.getString(0);
+                temp.setText(time);
+                Log.e("DB add", " time: " + time);
+            }
         }
-//        db.close();
+        db.close();
     }
 
     private void setTimeData(){

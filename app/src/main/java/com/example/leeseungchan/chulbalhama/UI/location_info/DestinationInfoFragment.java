@@ -4,7 +4,6 @@
 package com.example.leeseungchan.chulbalhama.UI.location_info;
 
 import android.app.TimePickerDialog;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,18 +15,16 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.DayTimeDialog;
-import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
+import com.example.leeseungchan.chulbalhama.Activities.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
 import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;

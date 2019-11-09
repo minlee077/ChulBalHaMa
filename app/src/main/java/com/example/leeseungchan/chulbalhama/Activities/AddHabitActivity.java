@@ -1,4 +1,4 @@
-package com.example.leeseungchan.chulbalhama;
+package com.example.leeseungchan.chulbalhama.Activities;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,17 +15,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.leeseungchan.chulbalhama.Adpater.prepareAdapter;
+import com.example.leeseungchan.chulbalhama.Adpater.PrepareAdapter;
+import com.example.leeseungchan.chulbalhama.DBHelper;
+import com.example.leeseungchan.chulbalhama.DayDialog;
+import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
-import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
 public class AddHabitActivity extends AppCompatActivity{
 
-    private TextView habitName;
-    private TextView habitDesc;
+    private EditText habitName;
+    private EditText habitDesc;
     // prepare
     private ArrayList<String> prepares = new ArrayList<>();
     // day and place
@@ -62,7 +64,7 @@ public class AddHabitActivity extends AppCompatActivity{
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         prepareRecycle.setLayoutManager(layoutManager);
 
-        final RecyclerView.Adapter prepareAdapter = new prepareAdapter(prepares);
+        final RecyclerView.Adapter prepareAdapter = new PrepareAdapter(prepares);
         prepareRecycle.setAdapter(prepareAdapter);
 
         Button prepareInputButton = prepare.findViewById(R.id.button_for_selection);

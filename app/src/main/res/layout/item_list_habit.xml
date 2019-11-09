@@ -7,7 +7,8 @@
     android:background="@drawable/round_box"
     android:paddingTop="3dp"
     android:paddingLeft="@dimen/fragment_padding_plain"
-    android:paddingRight="@dimen/fragment_padding_plain">
+    android:paddingRight="@dimen/fragment_padding_plain"
+    android:id="@+id/list_habit">
 
         <TextView
             android:id="@+id/item_habit_name"

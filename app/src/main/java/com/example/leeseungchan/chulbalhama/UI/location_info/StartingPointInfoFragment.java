@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.DBHelper;
-import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
+import com.example.leeseungchan.chulbalhama.Activities.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.map.MapAddFragment;
 

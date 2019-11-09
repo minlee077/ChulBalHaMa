@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"
+        <activity android:name=".Activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:text="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddHabitActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".Activities.AddHabitActivity"
+            android:parentActivityName=".Activities.MainActivity"
             />
-        <activity android:name=".LocationInfoActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".Activities.LocationInfoActivity"
+            android:parentActivityName=".Activities.MainActivity"
+            />
+        <activity android:name=".Activities.HabitSpecActivity"
+            android:parentActivityName=".Activities.MainActivity"
             />
     </application>
 

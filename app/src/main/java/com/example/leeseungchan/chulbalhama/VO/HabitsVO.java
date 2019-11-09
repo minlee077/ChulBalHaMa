@@ -7,6 +7,10 @@ public class HabitsVO {
     String prepare;
     int achievementRate;
 
+    public int getId(){
+        return id;
+    }
+
     public String getHabitName() {
         return habitName;
     }

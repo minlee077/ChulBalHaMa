@@ -1,4 +1,4 @@
-package com.example.leeseungchan.chulbalhama;
+package com.example.leeseungchan.chulbalhama.Activities;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.leeseungchan.chulbalhama.DBHelper;
+import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragment;
 
@@ -36,33 +38,6 @@ public class MainActivity extends AppCompatActivity
 //        dbHelper.setDays();
 //        dbHelper.setUser();
 
-        // set up toolbar on top
-        Toolbar toolbarMain = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbarMain);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // drawable
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-               this, drawerLayout, toolbarMain, R.string.openDrawerNavigation,R.string.closeDrawerNavigation);
-
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        fragmentManager = getSupportFragmentManager();
-        habitListFragment = new HabitListFragment();
-        personalInfoFragment = new PersonalInfoFragment();
-
-        transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, habitListFragment).commitAllowingStateLoss();
-
-        setTitle(R.string.app_name);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -97,6 +72,36 @@ public class MainActivity extends AppCompatActivity
     public void setTitle(int id){
         TextView title = (TextView)findViewById(R.id.toolbar_title);
         title.setText(id);
+    }
+
+    private void setMain(){
+        // set up toolbar on top
+        Toolbar toolbarMain = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbarMain);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // drawable
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbarMain, R.string.openDrawerNavigation,R.string.closeDrawerNavigation);
+
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        fragmentManager = getSupportFragmentManager();
+        habitListFragment = new HabitListFragment();
+        personalInfoFragment = new PersonalInfoFragment();
+
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, habitListFragment).commitAllowingStateLoss();
+
+        setTitle(R.string.app_name);
     }
 
 }

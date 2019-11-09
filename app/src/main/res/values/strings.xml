@@ -13,6 +13,9 @@
     <string name="button_change">변경</string>
     <string name="button_setting">설정</string>
     <string name="button_here">여기</string>
+    <string name="button_starting">출발지 입력하기</string>
+    <string name="button_ending">도착지 추가하기</string>
+    <string name="button_go">시작하기</string>
 
 
     <string name="guide_habit_name_intro">나는 출근/통학시간 중에</string>

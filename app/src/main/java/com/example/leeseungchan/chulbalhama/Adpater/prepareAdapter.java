@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.R;
 
 import java.util.ArrayList;
 
-public class prepareAdapter extends RecyclerView.Adapter<prepareAdapter.ListViewHolder> {
+public class PrepareAdapter extends RecyclerView.Adapter<PrepareAdapter.ListViewHolder> {
 
     private ArrayList<String> mData = null;
 
@@ -40,24 +39,24 @@ public class prepareAdapter extends RecyclerView.Adapter<prepareAdapter.ListView
         }
     }
 
-    public prepareAdapter(ArrayList<String> list) {
+    public PrepareAdapter(ArrayList<String> list) {
         mData = list ;
     }
-    public prepareAdapter(){}
+    public PrepareAdapter(){}
 
     @Override
-    public prepareAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PrepareAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
         View view = inflater.inflate(R.layout.item_list_change_delete, parent, false) ;
-        prepareAdapter.ListViewHolder vh = new prepareAdapter.ListViewHolder(view) ;
+        PrepareAdapter.ListViewHolder vh = new PrepareAdapter.ListViewHolder(view) ;
 
         return vh ;
     }
 
     @Override
-    public void onBindViewHolder(prepareAdapter.ListViewHolder holder, int position) {
+    public void onBindViewHolder(PrepareAdapter.ListViewHolder holder, int position) {
         String text = mData.get(position) ;
         holder.item_name.setText(text) ;
     }

@@ -25,9 +25,8 @@ import android.widget.TextView;
 import com.example.leeseungchan.chulbalhama.Adpater.DestinationAdapter;
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
-import com.example.leeseungchan.chulbalhama.LocationInfoActivity;
+import com.example.leeseungchan.chulbalhama.Activities.LocationInfoActivity;
 import com.example.leeseungchan.chulbalhama.VO.DestinationsVO;
-import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
@@ -36,14 +35,13 @@ public class PersonalInfoFragment extends Fragment{
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private ArrayList<DestinationsVO> destinations = new ArrayList<>();
+    private DBHelper dbHelper = new DBHelper(getContext());
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
-
-        final DBHelper dbHelper = new DBHelper(getContext());
 
         /* name */
         LinearLayout name = v.findViewById(R.id.info_name);
@@ -64,35 +62,7 @@ public class PersonalInfoFragment extends Fragment{
         nameChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Title");
-                View viewInflated =
-                        LayoutInflater.from(getContext())
-                                .inflate(R.layout.dialog_edit_text, (ViewGroup) getView(), false);
-
-                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                builder.setView(viewInflated);
-
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        String newName = input.getText().toString();
-                        SQLiteDatabase db = dbHelper.getReadableDatabase();
-                        db.execSQL("update user set name=\""+ newName + "\" where _id=1");
-                        db.close();
-                        Log.e("name input", "onClick:" + newName);
-                    }
-                });
-
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                setNameDialog();
             }
         });
 
@@ -195,6 +165,38 @@ public class PersonalInfoFragment extends Fragment{
 
             destinations.add(h);
         }
+    }
+
+    public void setNameDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Title");
+        View viewInflated =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.dialog_edit_text, (ViewGroup) getView(), false);
+
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String newName = input.getText().toString();
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                db.execSQL("update user set name=\""+ newName + "\" where _id=1");
+                db.close();
+                Log.e("name input", "onClick:" + newName);
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
 }
