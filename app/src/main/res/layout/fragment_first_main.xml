@@ -56,5 +56,5 @@
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/hipo_stand" />
+        android:background="@drawable/hipo_stand" />
 </android.support.constraint.ConstraintLayout>

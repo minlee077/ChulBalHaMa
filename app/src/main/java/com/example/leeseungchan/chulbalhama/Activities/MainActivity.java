@@ -2,10 +2,8 @@ package com.example.leeseungchan.chulbalhama.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,15 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
-import com.example.leeseungchan.chulbalhama.UI.habit_list.HabitListFragment;
+import com.example.leeseungchan.chulbalhama.UI.habit.HabitListFragment;
 import com.example.leeseungchan.chulbalhama.UI.personal_info.PersonalInfoFragment;
-import com.example.leeseungchan.chulbalhama.UI.start.StartFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{

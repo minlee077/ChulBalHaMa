@@ -128,7 +128,7 @@ public class DestinationInfoFragment extends Fragment{
                         ((LocationInfoActivity) getActivity()).setTimeMin(minute);
                         timeGuideText.setText(hourOfDay + "시간 " + minute + "분");
                     }
-                }, 0,0,false);
+                }, 0,0,true);
 
 
                 dialog.show();

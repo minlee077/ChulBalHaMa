@@ -1,4 +1,4 @@
-package com.example.leeseungchan.chulbalhama.UI.habit_list;
+package com.example.leeseungchan.chulbalhama.UI.habit;
 
 import android.content.Context;
 import android.content.Intent;

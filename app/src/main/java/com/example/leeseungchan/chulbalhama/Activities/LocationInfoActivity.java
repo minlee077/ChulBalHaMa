@@ -18,10 +18,6 @@ import java.util.ArrayList;
 
 public class LocationInfoActivity extends AppCompatActivity{
 
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
-    private DestinationInfoFragment destinationInfoFragment;
-
     private int timeHour;
     private int timeMin;
     private double latitude;
@@ -53,12 +49,12 @@ public class LocationInfoActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //set up destination Info
-        destinationInfoFragment = new DestinationInfoFragment();
+        DestinationInfoFragment destinationInfoFragment = new DestinationInfoFragment();
         final StartingPointInfoFragment startingPointInfoFragment = new StartingPointInfoFragment();
-
-        fragmentManager = getSupportFragmentManager();
-
-        transaction = fragmentManager.beginTransaction();
+    
+        FragmentManager fragmentManager = getSupportFragmentManager();
+    
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         if(data == 1) {
             transaction.replace(R.id.nav_host_fragment, destinationInfoFragment)
                     .commitAllowingStateLoss();
