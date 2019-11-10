@@ -44,9 +44,11 @@ public class PersonalInfoFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
         dbHelper = new DBHelper(getContext());
 
+        dbHelper = new DBHelper(getContext());
+        
         /* name */
         LinearLayout name = v.findViewById(R.id.info_name);
-
+        
         // @todo need to get name data from db
         final TextView textName = name.findViewById(R.id.item_name);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -146,7 +148,6 @@ public class PersonalInfoFragment extends Fragment{
         String sql = "select destination_name from destinations";
         Cursor c = db.rawQuery(sql, null);
         while(c.moveToNext()){
-
             String name = c.getString(0);
 
             DestinationsVO h = new DestinationsVO();
@@ -154,6 +155,7 @@ public class PersonalInfoFragment extends Fragment{
 
             destinations.add(h);
         }
+        Log.e("destination size ", destinations.size() + "개");
     }
 
     public void setNameDialog(){

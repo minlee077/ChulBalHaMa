@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -186,14 +187,14 @@ public class DestinationInfoFragment extends Fragment{
                 DBHelper dbHelper = new DBHelper(v.getContext());
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 // destination
-                String sql = "insert into destinations(coordinate, time, destination_name) values(?,?,?)";
+                String sql = "insert into destinations (coordinate, time, destination_name) values(?,?,?)";
 
                 String[] data = {
                         destGuideText.getText().toString(),
                         timeGuideText.getText().toString(),
                         dest_name.getText().toString()
                 };
-                db.rawQuery(sql, data);
+                db.execSQL(sql, new Object[]{data[0], data[1], data[2]});
                 db.close();
 
                 // day

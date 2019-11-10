@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.ListViewHolder>{
 
     private ArrayList<DestinationsVO> mData = null;
-    private Context context;
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
         TextView item_name ;
@@ -27,44 +26,46 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
 
 
         ListViewHolder(final View itemView) {
-            super(itemView) ;
-
-            item_name = itemView.findViewById(R.id.item_name) ;
+            super(itemView);
+    
+            item_name = itemView.findViewById(R.id.item_name);
             change = itemView.findViewById(R.id.button_change);
             change.setVisibility(View.INVISIBLE);
             delete = itemView.findViewById(R.id.button_delete);
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("\n"+mData.get(getAdapterPosition()));
+                    System.out.println("\n" + mData.get(getAdapterPosition()));
                     int id = getAdapterPosition();
                     deleteList(id);
                     notifyDataSetChanged();
                     DBHelper dbHelper = new DBHelper(itemView.getContext());
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    String sql = "delete from destinations where _id=" + "\""+ id + "\"";
+                    String sql = "delete from destinations where _id=" + "\"" + id + "\"";
                     db.execSQL(sql);
                     db.close();
                 }
             });
-
-            context = itemView.getContext();
+        }
+        
+        public void setItem_name(String name){
+            item_name.setText(name);
         }
     }
 
     public DestinationAdapter(ArrayList<DestinationsVO> list) {
         mData = list ;
-        this.notifyDataSetChanged();
     }
     public DestinationAdapter(){}
 
     @Override
     public DestinationAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
+        LayoutInflater inflater =
+            (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.item_list_change_delete, parent, false) ;
-        DestinationAdapter.ListViewHolder vh = new DestinationAdapter.ListViewHolder(view) ;
+        View view = inflater.inflate(R.layout.item_list_change_delete, parent, false);
+        DestinationAdapter.ListViewHolder vh = new DestinationAdapter.ListViewHolder(view);
 
         return vh ;
     }
@@ -72,7 +73,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
     @Override
     public void onBindViewHolder(DestinationAdapter.ListViewHolder holder, int position) {
         DestinationsVO destination = mData.get(position) ;
-        holder.item_name.setText(destination.getDestinationName()) ;
+        holder.setItem_name(destination.getDestinationName());
     }
 
     @Override

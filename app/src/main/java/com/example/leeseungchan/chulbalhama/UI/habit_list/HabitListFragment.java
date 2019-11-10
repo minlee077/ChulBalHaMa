@@ -67,16 +67,15 @@ public class HabitListFragment extends Fragment {
 
         DBHelper dbHelper = new DBHelper(getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "select habit_name, description from habits";
+        String sql = "select * from habits";
         Cursor c = db.rawQuery(sql, null);
         while(c.moveToNext()){
-            String name = c.getString(0);
-            String desc = c.getString(1);
+            int id = c.getInt(0);
+            String name = c.getString(1);
+            String desc = c.getString(2);
+            String prepare = c.getString(3);
 
-            HabitsVO h = new HabitsVO();
-            h.setHabitName(name);
-            h.setDescription(desc);
-
+            HabitsVO h = new HabitsVO(id, name, desc, prepare, 0);
             habits.add(h);
         }
     }
