@@ -60,18 +60,23 @@ public class CustomSevenDayInfo {
         DBHelper helper = new DBHelper(view.getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql =
-                "select destination_name from destinations where _id=(select destination_id from day_of_week)";
-        Cursor cursor = db.rawQuery(sql, null);
+            "select destination_id from day_of_week";
+        Cursor destId = db.rawQuery(sql, null);
+        
+        String nameSql = "select destination_name from destinations where _id=";
 
         for(int i = 0; i < 7; i++){
-            String time;
+            Cursor destName;
+            String destinationName;
             TextView temp = dayInputs.get(i).findViewById(R.id.day_place);
             temp.setVisibility(View.VISIBLE);
 
-            if(cursor.moveToNext()) {
-                time = cursor.getString(0);
-                temp.setText(time);
-                Log.e("DB add", " time: " + time);
+            if(destId.moveToNext()&&destId.getInt(0)!= 0) {
+                destName = db.rawQuery(nameSql+destId.getInt(0),null);
+                destName.moveToNext();
+                    destinationName = destName.getString(0);
+                    Log.e("destination name = ", destinationName);
+                temp.setText(destName.getString(0));
             }
         }
         db.close();
@@ -127,16 +132,20 @@ public class CustomSevenDayInfo {
         DBHelper dbHelper = new DBHelper(view.getContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String sqlToGetDestID = "(select _id from destinations order by _id DESC limit 1)";
+        String sqlToGetDestID = "select _id from destinations order by _id DESC limit 1";
+        Cursor c = db.rawQuery(sqlToGetDestID, null);
+        c.moveToNext();
+        int destId = c.getInt(0);
         String sqlToUpdate = "update day_of_week set ";
         for(int i = 0; i < 7; i++){
             Log.e("times", i +"and"+times.get(i));
             if(selectable.get(i)){
                 String time = "\"" + times.get(i) +"\"";
                 db.execSQL(sqlToUpdate + "departure_time=" + time + ", destination_id="
-                        + sqlToGetDestID + " where day=" + "\""+dayName.get(i)+ "\"");
+                        + destId + " where day=" + "\""+dayName.get(i)+ "\"");
             }
         }
+        Log.d("destination id", destId+"dest");
         db.close();
     }
 

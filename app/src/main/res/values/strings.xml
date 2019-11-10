@@ -17,6 +17,9 @@
     <string name="button_ending">도착지 추가하기</string>
     <string name="button_go">시작하기</string>
 
+    <string name="see_info">정보보기</string>
+    <string name="see_history">기록보기</string>
+    <string name="see_delete">삭제하기</string>
 
     <string name="guide_habit_name_intro">나는 출근/통학시간 중에</string>
     <string name="guide_habit_name_hint">습관을 입력해 주세요</string>

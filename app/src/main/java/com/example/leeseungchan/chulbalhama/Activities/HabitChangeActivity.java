@@ -3,9 +3,7 @@ package com.example.leeseungchan.chulbalhama.Activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +18,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.leeseungchan.chulbalhama.Adpater.HabitAdapter;
 import com.example.leeseungchan.chulbalhama.Adpater.PrepareAdapter;
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.DayDialog;
@@ -30,21 +27,21 @@ import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
 
-public class HabitSpecActivity  extends AppCompatActivity {
+public class HabitChangeActivity extends AppCompatActivity {
 
     private HabitsVO habit;
     private DBHelper dbHelper;
-    private Context context;
+    private View view;
     private ArrayList<String> prepare = new ArrayList<>();
     private ArrayList<Boolean> days = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specific_habit);
+        setContentView(R.layout.activity_change_habit);
         dbHelper = new DBHelper(this);
         habit = (HabitsVO) getIntent().getSerializableExtra("habit");
-        context = this;
+        
 
         // set up toolbar on top
         Toolbar toolbarMain = findViewById(R.id.toolbar);
@@ -62,7 +59,7 @@ public class HabitSpecActivity  extends AppCompatActivity {
         nameChange.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                setNameDialog(context, v, "이름 바꾸기");
+                setNameDialog( v, "이름 바꾸기", habit.getId(), "habit_name");
             }
         });
         Button nameDelete = habitName.findViewById(R.id.button_delete);
@@ -71,12 +68,12 @@ public class HabitSpecActivity  extends AppCompatActivity {
         /* habit desc */
         LinearLayout habitDesc = findViewById(R.id.desc_setting);
         TextView descText = habitDesc.findViewById(R.id.item_name);
-        descText.setText(habit.getHabitName());
+        descText.setText(habit.getDescription());
         Button descChange = habitDesc.findViewById(R.id.button_change);
         descChange.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                setNameDialog(context, v, "설명 바꾸기");
+                setNameDialog( v, "설명 바꾸기", habit.getId(), "description");
             }
         });
         Button descDelete = habitDesc.findViewById(R.id.button_delete);
@@ -107,21 +104,27 @@ public class HabitSpecActivity  extends AppCompatActivity {
         dayChange.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                DayDialog customDialog = new DayDialog(HabitSpecActivity.this);
+                DayDialog customDialog = new DayDialog(HabitChangeActivity.this);
 
                 customDialog.callFunction(days, customSevenDayInfo);
             }
         });
         Button dayDelete = habitday.findViewById(R.id.button_delete);
         dayDelete.setVisibility(View.GONE);
+        
+        
+        setTitle(habit.getHabitName());
 
     }
-    public void setNameDialog(Context context, View v, String title){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    public void setNameDialog(View v, String title, final int id, final String attr){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         View viewInflated =
-                LayoutInflater.from(context)
-                        .inflate(R.layout.dialog_edit_text, (ViewGroup) v, false);
+                LayoutInflater.from(this).inflate(
+                    R.layout.dialog_edit_text,
+                    (ViewGroup)this.getWindow().getDecorView(),
+                    false
+                );
 
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
         builder.setView(viewInflated);
@@ -132,7 +135,8 @@ public class HabitSpecActivity  extends AppCompatActivity {
                 dialog.dismiss();
                 String newName = input.getText().toString();
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
-                db.execSQL("update habits set habit_name=\""+ newName + "\" where _id=1");
+                String sql = "update habits set"+ " "+ attr +"=\""+ newName + "\" where _id=" + id;
+                db.execSQL(sql);
                 db.close();
                 Log.e("name input", "onClick:" + newName);
             }
@@ -157,6 +161,11 @@ public class HabitSpecActivity  extends AppCompatActivity {
             this.prepare.add(prepares[i]);
         }
 
+    }
+    
+    public void setTitle(String id){
+        TextView title = (TextView)findViewById(R.id.toolbar_title);
+        title.setText(id);
     }
 
 }

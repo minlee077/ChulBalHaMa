@@ -7,11 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.leeseungchan.chulbalhama.Activities.AddHabitActivity;
-import com.example.leeseungchan.chulbalhama.Activities.HabitSpecActivity;
+import com.example.leeseungchan.chulbalhama.Activities.HabitChangeActivity;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
@@ -25,22 +27,55 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
     public class HabitViewHolder extends RecyclerView.ViewHolder{
         public TextView habitName;
         public TextView habitDescription;
-        LinearLayout habitList;
+        private TextView habitInfo, habitHistory, habitDelete;
+        private CheckBox showAdditional;
 
         public HabitViewHolder(@NonNull final View v){
             super(v);
-            habitList = v.findViewById(R.id.list_habit);
-            habitList.setOnClickListener(new View.OnClickListener() {
+            habitName = v.findViewById(R.id.item_habit_name);
+            habitDescription = v.findViewById(R.id.item_habit_description);
+            
+            showAdditional = v.findViewById(R.id.show_additional);
+            showAdditional.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), HabitSpecActivity.class);
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        habitInfo.setVisibility(View.VISIBLE);
+                        habitHistory.setVisibility(View.VISIBLE);
+                        habitDelete.setVisibility(View.VISIBLE);
+                    }else{
+                        habitInfo.setVisibility(View.GONE);
+                        habitHistory.setVisibility(View.GONE);
+                        habitDelete.setVisibility(View.GONE);
+                    }
+                }
+            });
+            
+            habitInfo = v.findViewById(R.id.info);
+            habitInfo.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Intent intent = new Intent(v.getContext(), HabitChangeActivity.class);
                     HabitsVO habit = getHabit(getAdapterPosition());
                     intent.putExtra("habit", habit);
                     v.getContext().startActivity(intent);
                 }
             });
-            habitName = v.findViewById(R.id.item_habit_name);
-            habitDescription = v.findViewById(R.id.item_habit_description);
+            
+            habitHistory = v.findViewById(R.id.history);
+            habitHistory.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                
+                }
+            });
+            habitDelete = v.findViewById(R.id.delete);
+            habitDelete.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+            
+                }
+            });
         }
 
         public void setHabit(HabitsVO itemHabit){
