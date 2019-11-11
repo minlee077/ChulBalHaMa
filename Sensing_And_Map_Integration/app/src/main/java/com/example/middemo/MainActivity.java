@@ -46,6 +46,8 @@ import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     static long countTime = 0;
     static long activityTimes[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     static int lastAction = -1;
+    static boolean mainCreated=false;
 
     public static final String TAG = MainActivity.class.getSimpleName();
     protected GoogleApiClient googleApiClient; // activity recognition handle
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainCreated=true;
 
         mBroadcastReceiver = new ActivityDetectionBroadcastReceiver();
         buildGoogleApiClient();
@@ -220,7 +224,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         };
 
-        StartWorker();// worker 생성
+        createNotificationChannel();
+        StartWorker();
     }
 
     //정민 시작
@@ -274,10 +279,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 showingMsg += getActivityString(i) + " : " + activityTimes[i] + "ms \n";
             activityTimes[i] = 0;
         }
-
         showingMsg += "학교에 도착하셨습니다. 설문을 수행하시겠습니까? (Y/N)";
         return showingMsg;
-
     }
 
     public class ActivityDetectionBroadcastReceiver extends BroadcastReceiver {// 리시버
@@ -321,9 +324,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(getApplicationContext(), strStatus, Toast.LENGTH_SHORT).show();//appcontext에 토스트
             //detectedActivities.setText(strStatus);
 
-
         }
-
 
     }
 
@@ -423,6 +424,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
     }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mainCreated=false;
+        Log.e("dest","app Destroyed");
+//        StartWorker();
+    }
     //정민끝
 
     public double formattingPoint(double target) {
@@ -501,46 +509,72 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportFragmentManager().beginTransaction().hide(mapFragment).commit();
     }
 
+    public static class DateVO {
+        int dayOfWeek;
+        Calendar Time;
+
+    }
+
+    static DateVO getDBinstance(Calendar c)
+    {
+        return new DateVO();
+    }
+
+
+    static Calendar getNextSchedule(Calendar current){
+        Calendar dueDate;
+        DateVO nextDate=getDBinstance(current);
+
+        dueDate = nextDate.Time;
+        dueDate.set(Calendar.HOUR_OF_DAY,dueDate.HOUR); // 오전 6시 30분으로 예약 가정
+        dueDate.set(Calendar.MINUTE, dueDate.MINUTE);
+        dueDate.set(Calendar.SECOND, dueDate.SECOND);
+        return Calendar.getInstance();
+    }
+
 
     static void StartWorker()
     {
         Log.d("mwm", "MainActivity::StartWorker()");
 
-
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
-
         //ENQUEUED -> RUNNING -> ENQUEUED. 정의에 따르면 주기적 작업은 되풀이되어야하므로 성공 또는 실패 상태에서 종료 될 수 없음.
         //명시적 취소 (혹은 retry)로만 종료 가능
-        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
+
+//        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(TestWorker.class, 15, TimeUnit.SECONDS)
+//                .setConstraints(constraints)
+//                .build();
+//WorkRequest.Builder.setBackoffCriteria(BackoffPolicy, 시간, 시간단위).
+
+
         //종료
-        //WorkRequest.Builder.setBackoffCriteria(BackoffPolicy, 시간, 시간단위).
+        Calendar currentDate = Calendar.getInstance();
+        Calendar dueDate= getNextSchedule(currentDate);
+
+        dueDate.set(Calendar.HOUR_OF_DAY,6); // 오전 6시 30분으로 예약 가정
+        dueDate.set(Calendar.MINUTE, 30);
+        dueDate.set(Calendar.SECOND, 0);
+
+        if (dueDate.before(currentDate)) {
+            dueDate.add(Calendar.HOUR_OF_DAY, 24); // 예정시간이 이미 지났다면, 다음날로 지정
+        }
+
+        long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
+
+        Log.e("workmanager Settings","enqueue"+dueDate.toString());
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(TestWorker.class)
                 .setConstraints(constraints)
                 .addTag("myRequest")
-                .setInitialDelay(2, TimeUnit.SECONDS)
+                .setInitialDelay(timeDiff, TimeUnit.SECONDS)
                 .build();
 
-        //        .setBackoffCriteria(
-        //                BackoffPolicy.LINEAR,
-        //                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
-        //                TimeUnit.MILLISECONDS)
-        //Cancle :
-        //WorkManager.cancelWorkById(UUID)
-        //WorkManager.cancelWorkById(workRequest.getId());
-
-
-        //.setInputData(imageData)
-        //Data imageData = new Data.Builder
-        //                .putString(Constants.KEY_IMAGE_URI, imageUriString)
-        //                .build();
-        //.addTag("xx")
 
         //work policy : https://developer.android.com/reference/androidx/work/ExistingWorkPolicy.html
+
         WorkManager.getInstance().enqueueUniqueWork("uniqueWork", ExistingWorkPolicy.REPLACE,workRequest);
+
     }
 
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -553,18 +587,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     "Foreground Service Channel",
                     NotificationManager.IMPORTANCE_DEFAULT
             );
-
             notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID) //CHANNEL_ID 채널에 지정한 아이디
                     .setContentTitle("background machine")
                     .setContentText("알림입니다")
                     .setSmallIcon(R.mipmap.ic_launcher_round)
                     .setOngoing(true).build();
-
             manager = getApplicationContext().getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
-
     }
-
-
 }

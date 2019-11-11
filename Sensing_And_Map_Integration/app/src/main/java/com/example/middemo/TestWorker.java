@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -22,10 +23,9 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-import com.example.middemo.MainActivity;
-
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.middemo.MainActivity.StartWorker;
+import static com.example.middemo.MainActivity.mainCreated;
 
 public class TestWorker extends Worker {
 
@@ -33,7 +33,7 @@ public class TestWorker extends Worker {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     Notification notification;
     NotificationManager manager;
-    Context mContext;
+    Context appContext;
     AppCompatActivity actContext;
 
 //    MainActivity mainActivity;
@@ -41,11 +41,14 @@ public class TestWorker extends Worker {
 
     public static int called = 0;
 
-    public TestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
-        super(context, workerParams);
-        mContext = context;
-    }
+    public TestWorker(@NonNull Context appContext, @NonNull WorkerParameters workerParams) {
+        super(appContext, workerParams);
+        this.appContext = appContext;
 
+    }
+    //                        Intent intent = new Intent(appContext, PopUpScreen.class);
+//                        intent.putExtra("data", "습관을 수행하세요");
+//                        appContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     @NonNull
     @Override
     public Result doWork() {
@@ -59,30 +62,26 @@ public class TestWorker extends Worker {
             @Override
             public void run() {
                 // Run your task here
-                called++;
                 String str = "BackGround Service running... " + called;
-                Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
-                if (called == 5) {
+                Toast.makeText(appContext, str, Toast.LENGTH_SHORT).show();
+                Log.e("workManager", "called : "+called);
+                    if(!mainCreated)
+                    {
+                        Log.e("workManager", "if statements: "+called);
+                        Toast.makeText(appContext, "앱이 종료되어 있음", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent( appContext ,MainActivity.class);
+                        appContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-                    Toast.makeText(mContext, "in the if statement", Toast.LENGTH_SHORT).show();
-                    //mContext.
-//                    Toast.makeText(mContext, "after mainActivity called", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent( mContext ,MainActivity.class);
-                    mContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
+                    }else
+                    {
+                        Toast.makeText(appContext, "이미 앱이 켜져있음", Toast.LENGTH_SHORT).show();
+                    }
 //                     manager.notify(1, notification);
                 }
-            }
         }, 0);
-
-
-        if (called >= 5)
-            return Result.success();
-
-        StartWorker(); // 재귀 생성
         //needs to be retried at a later time via Result.retry() 실패시 처리 필요 예상
-
         return Result.success();
 
     }
