@@ -35,5 +35,16 @@
         android:layout_marginBottom="32dp"
         android:onClick="viewCalculateHandler"
         android:text="연산" />
+    <Button
+        android:id="@+id/view_Chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="viewChartHandler"
+        android:text="그래프 조회" />
+
 
 </RelativeLayout>
