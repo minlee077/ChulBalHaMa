@@ -4,16 +4,22 @@
     <string name="title_test">테스트</string>
     <string name="title_habit">습관 더하기</string>
     <string name="title_destination">목적지 추가하기</string>
+    <string name="title_starting">출발지 변경하기</string>
 
     <string name="store">저장하기</string>
 
 
-    <string name="button_add">추가하기</string>
-    <string name="button_need">필요하다</string>
-    <string name="button_not_need">전혀 필요없다.</string>
-    <string name="button_change">바꾸기</string>
-    <string name="button_setting">설정하기</string>
+    <string name="button_add">추가</string>
+    <string name="button_change">변경</string>
+    <string name="button_setting">설정</string>
+    <string name="button_here">여기</string>
+    <string name="button_starting">출발지 입력하기</string>
+    <string name="button_ending">도착지 추가하기</string>
+    <string name="button_go">시작하기</string>
 
+    <string name="see_info">정보보기</string>
+    <string name="see_history">기록보기</string>
+    <string name="see_delete">삭제하기</string>
 
     <string name="guide_habit_name_intro">나는 출근/통학시간 중에</string>
     <string name="guide_habit_name_hint">습관을 입력해 주세요</string>
@@ -23,30 +29,54 @@
     <string name="guide_habit_desc_hint">목표를 입력해 주세요</string>
     <string name="guide_habit_desc_end">만큼 했으면 좋겠다!</string>
 
-    <string name="guide_ask_prepare">이것을 하기 위해 준비물이 필요하다</string>
+    <string name="guide_ask_prepare">준비물</string>
     <string name="guide_prepare_intro">준비물은</string>
     <string name="guide_prepare_hint">준비물을 입력해 주세요</string>
     <string name="guide_prepare_end">(이)다.</string>
 
-    <string name="guide_date_and_place_intro">이것을</string>
-    <string name="guide_date_and_place_middle">에</string>
-    <string name="guide_date_and_place_end">갈 때 할 생각이다.</string>
+    <string name="guide_date_and_place_intro">요일 및 장소</string>
+
+    <string name="guide_when">언제 어디서 하실 예정이신가요?</string>
+    <string name="guide_when_day">요일</string>
+    <string name="guide_when_time">시간</string>
+    <string name="guide_where">장소</string>
+    <string name="guide_address">주소</string>
 
 
     <string name="setting_name">이름</string>
     <string name="setting_start">출발</string>
-    <string name="setting_destination">도착</string>
+    <string name="setting_destination">목적지</string>
 
 
     <string name="map_register">등록</string>
-    <string name="map_location_name_guide">이 곳은 어디인가요?</string>
+    <string name="map_location_name_guide">장소 이름</string>
     <string name="map_location_name_hint">EX) 회사, 학교</string>
-    <string name="map_location_address">위치를 설정해 주세요</string>
-    <string name="map_location_time_take">가는데 얼마나 걸리나요?</string>
+    <string name="map_location_address">위치 정보</string>
+    <string name="map_location_time_take">소요 시간</string>
+    <string name="map_location_go_time">출발 시간</string>
 
+    <string name="hint_empty_edit_text">여기에 입력해 주세요.</string>
 
+    <string name="time_input">EX) 6:30</string>
     <string name="time_hour">시</string>
     <string name="time_minute">분</string>
+
+    <string name="day_mon">월</string>
+    <string name="day_the">화</string>
+    <string name="day_wes">수</string>
+    <string name="day_thr">목</string>
+    <string name="day_fri">금</string>
+    <string name="day_sat">토</string>
+    <string name="day_sun">일</string>
+
+    <string name="srbai">SRBAI 검사</string>
+    <string name="srbai_1">생각하기도 전에 준비했다.</string>
+    <string name="srbai_2">생각하기도 전에 시작했다.</string>
+    <string name="srbai_3">꼭 의식하지 않아도 한다.</string>
+    <string name="srbai_4">뭔가 자동적으로 하고 있었다.</string>
+
+    <string name="min">아직</string>
+    <string name="max">완전</string>
 
 
     <string name="openDrawerNavigation">OpenDrawerNavigation</string>

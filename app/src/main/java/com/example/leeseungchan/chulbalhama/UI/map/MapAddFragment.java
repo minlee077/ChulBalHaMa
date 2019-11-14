@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,9 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.leeseungchan.chulbalhama.DestinationActivity;
 import com.example.leeseungchan.chulbalhama.R;
-import com.example.leeseungchan.chulbalhama.UI.destination_info.DestinationInfoFragment;
+import com.example.leeseungchan.chulbalhama.UI.location_info.DestinationInfoFragment;
+import com.example.leeseungchan.chulbalhama.UI.location_info.StartingPointInfoFragment;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPOIItem;
@@ -35,6 +33,7 @@ public class MapAddFragment extends Fragment implements View.OnClickListener{
 
     private Context context;
     String lat, lon;
+    Bundle bundle;
 
     /* TMap 세팅*/
     TMapData tMapData = new TMapData();
@@ -45,9 +44,12 @@ public class MapAddFragment extends Fragment implements View.OnClickListener{
     /*기타 컴포넌트*/
     EditText search_box; //주소 검색창
 
-    public static MapAddFragment newInstance(){
-        return new MapAddFragment();
+    public static MapAddFragment newInstance(Bundle bundle){
+        MapAddFragment v = new MapAddFragment();
+        v.bundle = bundle;
+        return v;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -147,12 +149,27 @@ public class MapAddFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         Fragment fg;
+        Bundle args = new Bundle();
+        args.putString("address",search_box.getText().toString());
         if(view.getId() == R.id.register_btn){
-            fg = new DestinationInfoFragment();
-            if (!fg.isAdded()) {
-                transaction.replace(R.id.nav_host_fragment, fg)
-                        .commitNowAllowingStateLoss();
+
+            switch (bundle.getInt("type")) {
+            case 0:
+                fg = StartingPointInfoFragment.newInstance(args);
+                if (!fg.isAdded()) {
+                    transaction.replace(R.id.nav_host_fragment, fg)
+                            .commitNowAllowingStateLoss();
+                }
+                break;
+            case 1:
+                fg = DestinationInfoFragment.newInstance(args);
+                if (!fg.isAdded()) {
+                    transaction.replace(R.id.nav_host_fragment, fg)
+                            .commitNowAllowingStateLoss();
+                }
+                break;
             }
+
         }
     }
 

@@ -9,8 +9,6 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_main"
-        android:layout_marginTop="-1dp"
         android:scrollbarFadeDuration="3"
         android:scrollbars="vertical" />
 

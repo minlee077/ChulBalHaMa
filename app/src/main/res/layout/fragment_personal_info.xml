@@ -9,32 +9,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        android:orientation="vertical">
 
         <!-- name -->
         <TextView
             style="@style/MenuText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setting_name"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/setting_name" />
 
 
-        <EditText
-            style="@style/GuideText"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/setting_name"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/fragment_horizontal_margin_big"
-            android:layout_marginLeft="@dimen/fragment_horizontal_margin_big"
+        <include android:id="@+id/info_name"
+            layout="@layout/item_list_change_delete"/>
+
+        <View android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="@dimen/content_space_small"/>
 
 
@@ -43,89 +34,30 @@
             style="@style/MenuText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setting_start"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:layout_marginStart="@dimen/fragment_horizontal_margin_big"
-            android:layout_marginLeft="@dimen/fragment_horizontal_margin_big">
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/setting_start" />
 
-            <TextView
-                style="@style/GuideText"
-                android:id="@+id/info_start_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.5"/>
+        <include
+            android:id="@+id/info_start"
+            layout="@layout/item_list_change_delete" />
 
-            <TextView
-                android:id="@+id/info_start_description"
-                style="@style/GuideText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"/>
-            <Button
-                android:id="@+id/info_setting_start"
-                android:layout_width="60dp"
-                android:layout_height="30dp"
-                android:text="@string/button_change"
-                style="@style/StoreButton"/>
-
-        </LinearLayout>
+        <View android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:layout_marginBottom="@dimen/content_space_small"/>
 
         <!-- destination -->
-        <LinearLayout
-            android:orientation="horizontal"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/MenuText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/setting_destination"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical|start"/>
-            <Button
-                android:id="@+id/info_add_destination"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_add_circle_outline"
-                android:layout_gravity="center_vertical|end"
-                style="@style/StoreButton"/>
+            <include
+                android:id="@+id/info_destination"
+                layout="@layout/item_selective" />
 
-        </LinearLayout>
-
-        <!-- destination array -->
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/list_description"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="@dimen/content_space_small"
-            android:layout_marginStart="@dimen/fragment_horizontal_margin_big"
-            android:layout_marginLeft="@dimen/fragment_horizontal_margin_big"
-            >
-
-        </android.support.constraint.ConstraintLayout>
-
+        </ScrollView>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/store_personal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/StoreButton"
-        android:text="@string/store"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+
 
 </android.support.constraint.ConstraintLayout>

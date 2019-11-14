@@ -12,4 +12,5 @@
     <color name="text_menu">#333333</color>
     <color name="selectable_text">#404040</color>
     <color name="Dark">#22272B</color>
+    <color name="colorDefaultBackground">#fffafa</color>
 </resources>
