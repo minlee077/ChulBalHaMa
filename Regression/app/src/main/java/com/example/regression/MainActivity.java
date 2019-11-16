@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -27,36 +26,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     NonLinearRegression nonLinearRegression;
+    RegressionVO regressionVO;
+    DatasetVO datasetVO;
+
+    ArrayList<Integer> days ;
+    ArrayList<Double> scores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         nonLinearRegression = new NonLinearRegression();
-    }
+        regressionVO=new RegressionVO();
+        datasetVO = new DatasetVO();
 
-    public void viewChartHandler(View view) {
-        Intent intent = new Intent(this,PlotLineChart.class);
-        startActivity(intent);
-    }
-
-    public void viewResultHandler(View view) {
-        double score = nonLinearRegression.estimate(100);
-
-        int date = nonLinearRegression.formationDateEstimiate();
-        Log.e("resultBtn", "resultClicked");
-        Toast.makeText(this, "100일차 예측 점수 :" + score +
-                "\n 예측되는 완성일 :" + date, Toast.LENGTH_LONG).show();
-    }
-
-    //viewChartHandler
-
-    public void viewCalculateHandler(View view) {
-        Log.e("calcBtn", "calcClicked");
-
-
-        ArrayList<Integer> days = new ArrayList<Integer>();
-        ArrayList<Double> scores = new ArrayList<Double>();
+        days = new ArrayList<Integer>();
+        scores = new ArrayList<Double>();
 
         for (int i = 1; i <= 67; i++)
             days.add(i);
@@ -69,15 +54,47 @@ public class MainActivity extends AppCompatActivity {
         scores.add(33.0);scores.add(31.0);scores.add(34.0);scores.add(35.0);
         scores.add(36.0);scores.add(39.0);scores.add(39.0);scores.add(39.0);
         scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(42.0);
-        scores.add(43.0);scores.add(40.0);scores.add(40.0);scores.add(39.0);
+        scores.add(42.0);scores.add(40.0);scores.add(40.0);scores.add(39.0);
         scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(41.0);
-        scores.add(42.0);scores.add(43.0);scores.add(40.0);scores.add(40.0);
+        scores.add(42.0);scores.add(42.0);scores.add(40.0);scores.add(40.0);
         scores.add(39.0);scores.add(39.0);scores.add(39.0);scores.add(40.0);
-        scores.add(41.0);scores.add(41.0);scores.add(42.0);scores.add(43.0);
-        scores.add(40.0);scores.add(40.0);scores.add(42.0);scores.add(43.0);
+        scores.add(41.0);scores.add(41.0);scores.add(42.0);scores.add(41.0);
+        scores.add(40.0);scores.add(40.0);scores.add(42.0);scores.add(42.0);
         scores.add(40.0);scores.add(40.0);scores.add(41.0);scores.add(41.0);
-        scores.add(42.0);scores.add(43.0);scores.add(40.0);
+        scores.add(42.0);scores.add(42.0);scores.add(40.0);
+        datasetVO.setDaysNScores(days,scores);
+    }
+
+    public void viewChartHandler(View view) {
+        Intent intent = new Intent(this,PlotLineChart.class);
+        Bundle bundle = new Bundle();
+        regressionVO.setParameters(
+                nonLinearRegression.getParamenters()[0],
+                nonLinearRegression.getParamenters()[1],
+                nonLinearRegression.getParamenters()[2]
+        );
+        bundle.putSerializable("regressionModel",regressionVO);
+        bundle.putSerializable("dataset",datasetVO);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void viewResultHandler(View view) {
+        double score = nonLinearRegression.estimate(100);
+
+        int date = nonLinearRegression.formationDateEstimate();
+        Log.e("resultBtn", "resultClicked");
+        Toast.makeText(this, "100일차 예측 점수 :" + score +
+                "\n 예측되는 완성일 :" + date, Toast.LENGTH_LONG).show();
+    }
+
+    //viewChartHandler
+
+    public void viewCalculateHandler(View view) {
+        Log.e("calcBtn", "calcClicked");
+
         nonLinearRegression.optimize(days, scores);
+
         Toast.makeText(this, "Calc btn Test" + scores.size() + days.size(), Toast.LENGTH_LONG).show();
     }
 
