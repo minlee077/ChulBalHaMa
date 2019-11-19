@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.DayDialog;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.UI.components.CustomSevenDayInfo;
-import com.example.leeseungchan.chulbalhama.UI.location_info.DestinationInfoFragment;
 import com.example.leeseungchan.chulbalhama.VO.HabitsVO;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class HabitChangeFragment extends Fragment {
         /* prepare list*/
         RecyclerView prepares = v.findViewById(R.id.list);
         RecyclerView.LayoutManager layoutManager =
-            new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         prepares.setLayoutManager(layoutManager);
     
         RecyclerView.Adapter prepareAdapter = new PrepareAdapter(prepare);
@@ -98,7 +97,7 @@ public class HabitChangeFragment extends Fragment {
     
         final CustomSevenDayInfo customSevenDayInfo =
             new CustomSevenDayInfo(v.findViewById(R.id.add_habit_day));
-        customSevenDayInfo.setPlace();
+        customSevenDayInfo.setPlaceData();
     
         TextView dayText = habitday.findViewById(R.id.item_name);
         dayText.setText(habit.getHabitName());

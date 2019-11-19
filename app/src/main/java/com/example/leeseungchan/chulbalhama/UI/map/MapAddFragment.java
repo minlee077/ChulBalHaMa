@@ -3,10 +3,10 @@ package com.example.leeseungchan.chulbalhama.UI.map;
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -149,20 +149,19 @@ public class MapAddFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         Fragment fg;
-        Bundle args = new Bundle();
-        args.putString("address",search_box.getText().toString());
+        bundle.putString("address",search_box.getText().toString());
         if(view.getId() == R.id.register_btn){
 
             switch (bundle.getInt("type")) {
             case 0:
-                fg = StartingPointInfoFragment.newInstance(args);
+                fg = StartingPointInfoFragment.newInstance(bundle);
                 if (!fg.isAdded()) {
                     transaction.replace(R.id.nav_host_fragment, fg)
                             .commitNowAllowingStateLoss();
                 }
                 break;
             case 1:
-                fg = DestinationInfoFragment.newInstance(args);
+                fg = DestinationInfoFragment.newInstance(bundle);
                 if (!fg.isAdded()) {
                     transaction.replace(R.id.nav_host_fragment, fg)
                             .commitNowAllowingStateLoss();

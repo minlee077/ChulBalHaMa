@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +26,17 @@ import com.example.leeseungchan.chulbalhama.Adpater.DestinationAdapter;
 import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
 import com.example.leeseungchan.chulbalhama.Activities.LocationInfoActivity;
+import com.example.leeseungchan.chulbalhama.UI.components.CustomChangeDeleteItem;
 import com.example.leeseungchan.chulbalhama.VO.DestinationsVO;
+import com.example.leeseungchan.chulbalhama.VO.UserVO;
 
 import java.util.ArrayList;
 
 public class PersonalInfoFragment extends Fragment{
 
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
     private ArrayList<DestinationsVO> destinations = new ArrayList<>();
     private DBHelper dbHelper;
+    private UserVO userVO;
 
     @Nullable
     @Override
@@ -43,69 +44,16 @@ public class PersonalInfoFragment extends Fragment{
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal_info, container, false);
         dbHelper = new DBHelper(getContext());
-
-        dbHelper = new DBHelper(getContext());
+        
+        userVO = getUserVO();
         
         /* name */
-        LinearLayout name = v.findViewById(R.id.info_name);
-        
-        // @todo need to get name data from db
-        final TextView textName = name.findViewById(R.id.item_name);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("select name from user order by _id", null);
-        cursor.moveToNext();
-        textName.setText(cursor.getString(0));
-        db.close();
-
-        TextView nameDesc = name.findViewById(R.id.item_description);
-        nameDesc.setVisibility(View.INVISIBLE);
-
-        Button nameChangeBtn = name.findViewById(R.id.button_change);
-        nameChangeBtn.setText(R.string.button_change);
-        nameChangeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setNameDialog();
-            }
-        });
-
-        Button nameDeleteBtn = name.findViewById(R.id.button_delete);
-        nameDeleteBtn.setVisibility(View.GONE);
-        name.removeView(nameDeleteBtn);
+        setPersonalInfoChangeDeleteItem(v, R.id.info_name);
 
 
         /* start point */
-        LinearLayout startPoint = v.findViewById(R.id.info_start);
-
-        SQLiteDatabase db2 = dbHelper.getReadableDatabase();
-        String sql = "select starting_name, starting_coordinate from user order by _id";
-        Cursor cursor2 =  db2.rawQuery(sql, null);
-        cursor2.moveToNext();
-
-        TextView startPointName = startPoint.findViewById(R.id.item_name);
-        startPointName.setText(cursor2.getString(0));
-
-        TextView startPointDesc = startPoint.findViewById(R.id.item_description);
-        startPointDesc.setEnabled(false);
-        startPointDesc.setText(cursor2.getString(1));
-
-        db2.close();
-
-        Button startPointChangeBtn = startPoint.findViewById(R.id.button_change);
-        startPointChangeBtn.setText(R.string.button_change);
-        startPointChangeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LocationInfoActivity.class);
-                intent.putExtra("type", 0);
-                startActivity(intent);
-            }
-        });
-
-        Button startPointDeleteBtn = startPoint.findViewById(R.id.button_delete);
-        startPointDeleteBtn.setVisibility(View.GONE);
-        startPoint.removeView(startPointDeleteBtn);
-
+        setPersonalInfoChangeDeleteItem(v, R.id.info_start);
+        
 
         /* destination */
         LinearLayout destination = v.findViewById(R.id.info_destination);
@@ -128,7 +76,11 @@ public class PersonalInfoFragment extends Fragment{
 
         RecyclerView destinationRecycler = destination.findViewById(R.id.list);
         RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            new LinearLayoutManager(
+                getContext(),
+                RecyclerView.VERTICAL,
+                false
+            );
         destinationRecycler.setLayoutManager(layoutManager);
 
         RecyclerView.Adapter mAdapter;
@@ -137,7 +89,6 @@ public class PersonalInfoFragment extends Fragment{
 
         retrieve();
 
-        fragmentManager = getActivity().getSupportFragmentManager();
         return v;
     }
 
@@ -155,10 +106,53 @@ public class PersonalInfoFragment extends Fragment{
 
             destinations.add(h);
         }
-        Log.e("destination size ", destinations.size() + "개");
+    }
+    
+    private void setPersonalInfoChangeDeleteItem(View v, int id){
+        LinearLayout layout = v.findViewById(id);
+        CustomChangeDeleteItem item= new CustomChangeDeleteItem(layout);
+        // set title text
+        item.setTitle(getPersonalInfoTitle(id));
+        // set desc invisible
+        item.setVisibility(item.DESCRIPTION, View.INVISIBLE);
+        // set change button text & onClickListener
+        item.setChange(getResources().getString(R.string.button_change));
+        setOnClickListener(item.getChange(), layout);
+        // set delete button Gone
+        item.setVisibility(item.DELETE_BTN, View.GONE);
+    }
+    
+    private String getPersonalInfoTitle(int id){
+        String title = null;
+        switch (id){
+            case R.id.info_name:
+                title = userVO.getName();
+                break;
+            case R.id.info_start:
+                title = userVO.getStartingCoordinate();
+        }
+        return title;
+    }
+    
+    private void setOnClickListener(View target, final View root){
+        target.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (root.getId()){
+                    case R.id.info_name:
+                        setNameDialog();
+                        break;
+                    case R.id.info_start:
+                        Intent intent = new Intent(getContext(), LocationInfoActivity.class);
+                        intent.putExtra("type", 1);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
-    public void setNameDialog(){
+    private void setNameDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Title");
         View viewInflated =
@@ -176,7 +170,6 @@ public class PersonalInfoFragment extends Fragment{
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
                 db.execSQL("update user set name=\""+ newName + "\" where _id=1");
                 db.close();
-                Log.e("name input", "onClick:" + newName);
             }
         });
 
@@ -189,5 +182,20 @@ public class PersonalInfoFragment extends Fragment{
 
         builder.show();
     }
-
+    
+    private UserVO getUserVO(){
+        dbHelper = new DBHelper(getContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    
+        Cursor cursor =  db.rawQuery("select * from user order by _id", null);
+        cursor.moveToNext();
+        
+        UserVO userVO = new UserVO(
+            cursor.getString(1),
+            cursor.getString(2),
+            cursor.getString(3)
+        );
+        db.close();
+        return userVO;
+    }
 }

@@ -1,20 +1,20 @@
 package com.example.leeseungchan.chulbalhama.UI.start;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.leeseungchan.chulbalhama.Activities.AddHabitActivity;
 import com.example.leeseungchan.chulbalhama.Activities.LocationInfoActivity;
-import com.example.leeseungchan.chulbalhama.Adpater.HabitAdapter;
+import com.example.leeseungchan.chulbalhama.DBHelper;
 import com.example.leeseungchan.chulbalhama.R;
 
 public class StartFragment extends Fragment {
@@ -23,7 +23,8 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle saveInstanceState) {
         View v = inflater.inflate(R.layout.fragment_first_main, container, false);
-
+    
+        final EditText userName = v.findViewById(R.id.user_name);
         Button starting = v.findViewById(R.id.button_for_start);
         starting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +43,11 @@ public class StartFragment extends Fragment {
         store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newName = userName.getText().toString();
+                DBHelper dbHelper = new DBHelper(getContext());
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                db.execSQL("update user set name=\""+ newName + "\" where _id=1");
+                db.close();
                 getActivity().finish();
             }
         });
@@ -54,5 +60,7 @@ public class StartFragment extends Fragment {
         startActivity(intent);
     }
 
-
+    private void update_username(){
+    
+    }
 }

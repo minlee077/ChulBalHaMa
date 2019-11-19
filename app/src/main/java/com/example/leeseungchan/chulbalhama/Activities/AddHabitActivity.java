@@ -4,10 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,15 +39,7 @@ public class AddHabitActivity extends AppCompatActivity{
         setContentView(R.layout.activity_add_habit);
         TextView guideText;
         // set up toolbar on top
-        Toolbar toolbarMain = findViewById(R.id.toolbar_add_habit);
-        setSupportActionBar(toolbarMain);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        habitName = findViewById(R.id.add_habit_name);
-        habitDesc = findViewById(R.id.add_habit_desc);
+        setToolbar();
 
 
         /* prepare */
@@ -61,7 +53,7 @@ public class AddHabitActivity extends AppCompatActivity{
         final RecyclerView prepareRecycle = prepare.findViewById(R.id.list);
 
         RecyclerView.LayoutManager layoutManager;
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         prepareRecycle.setLayoutManager(layoutManager);
 
         final RecyclerView.Adapter prepareAdapter = new PrepareAdapter(prepares);
@@ -91,7 +83,7 @@ public class AddHabitActivity extends AppCompatActivity{
 
         final CustomSevenDayInfo customSevenDayInfo =
                 new CustomSevenDayInfo(findViewById(R.id.add_habit_day));
-        customSevenDayInfo.setPlace();
+        customSevenDayInfo.setPlaceData();
 
         // day and place TextView guide text
         guideText = dayPlace.findViewById(R.id.item_name);
@@ -113,24 +105,26 @@ public class AddHabitActivity extends AppCompatActivity{
 
         Button dayDelInputButton = dayPlace.findViewById(R.id.button_delete);
         dayPlace.removeView(dayDelInputButton);
-
-
-        final Context context = this;
+        
         Button store = findViewById(R.id.store_habit);
         store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HabitsVO habitsVO = new HabitsVO();
-                serializeHabit(habitsVO);
-                DBHelper helper = new DBHelper(context);
-                SQLiteDatabase db = helper.getWritableDatabase();
-                db.execSQL("insert into habits (habit_name, description, prepare) values(?,?,?)",new Object[]{habitsVO.getHabitName(), habitsVO.getDescription(), habitsVO.getPrepare()} );
-                Log.e("DB add", habitsVO.getHabitName() + habitsVO.getDescription() + habitsVO.getPrepare());
-                db.close();
+                insertHabit();
                 finish();
             }
         });
     }
+    
+    private void setToolbar(){
+        Toolbar toolbarMain = findViewById(R.id.toolbar_add_habit);
+        setSupportActionBar(toolbarMain);
+    
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+    
 
     private void serializeHabit(HabitsVO habit){
         String habitName = this.habitName.getText().toString();
@@ -143,6 +137,21 @@ public class AddHabitActivity extends AppCompatActivity{
         habit.setHabitName(habitName);
         habit.setDescription(habitDesc);
         habit.setPrepare(prepare.toString());
+    }
+    
+    private void insertHabit(){
+        HabitsVO habitsVO = new HabitsVO();
+        serializeHabit(habitsVO);
+        DBHelper helper = new DBHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(
+            "insert into habits (habit_name, description, prepare) values(?,?,?)",
+            new Object[]{
+                habitsVO.getHabitName(),
+                habitsVO.getDescription(),
+                habitsVO.getPrepare()}
+            );
+        db.close();
     }
 
 }
