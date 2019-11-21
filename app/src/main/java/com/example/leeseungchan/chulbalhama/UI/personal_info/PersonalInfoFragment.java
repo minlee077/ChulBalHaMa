@@ -9,11 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +126,7 @@ public class PersonalInfoFragment extends Fragment{
                 title = userVO.getName();
                 break;
             case R.id.info_start:
-                title = userVO.getStartingCoordinate();
+                title = userVO.getStartingName();
         }
         return title;
     }
@@ -144,7 +141,7 @@ public class PersonalInfoFragment extends Fragment{
                         break;
                     case R.id.info_start:
                         Intent intent = new Intent(getContext(), LocationInfoActivity.class);
-                        intent.putExtra("type", 1);
+                        intent.putExtra("type", 0);
                         startActivity(intent);
                         break;
                 }
@@ -187,7 +184,7 @@ public class PersonalInfoFragment extends Fragment{
         dbHelper = new DBHelper(getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
     
-        Cursor cursor =  db.rawQuery("select * from user order by _id", null);
+        Cursor cursor =  db.rawQuery("select * from user where _id=1", null);
         cursor.moveToNext();
         
         UserVO userVO = new UserVO(

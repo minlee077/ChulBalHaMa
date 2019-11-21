@@ -35,17 +35,7 @@ public class HabitListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_habit_list, container, false);
 
         // set up recycler view
-        RecyclerView recyclerView;
-        recyclerView = (RecyclerView) v.findViewById(R.id.list);
-        RecyclerView.LayoutManager layoutManager;
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        RecyclerView.Adapter mAdapter;
-        mAdapter = new HabitAdapter(habits);
-        recyclerView.setAdapter(mAdapter);
-
-        retrieve();
+        setRecyclerView(v);
 
         // set add button
         Button habitAddButton = v.findViewById(R.id.add);
@@ -62,7 +52,7 @@ public class HabitListFragment extends Fragment {
         return v;
     }
 
-    public void retrieve(){
+    private void retrieve(){
         habits.clear();
 
         DBHelper dbHelper = new DBHelper(getContext());
@@ -72,11 +62,28 @@ public class HabitListFragment extends Fragment {
         while(c.moveToNext()){
             int id = c.getInt(0);
             String name = c.getString(1);
-            String desc = c.getString(2);
-            String prepare = c.getString(3);
+            int quantity = c.getInt(2);
+            int due = c.getInt(3);
+            String dependents = c.getString(4);
+            String prepare = c.getString(5);
 
-            HabitsVO h = new HabitsVO(id, name, desc, prepare, 0);
+            HabitsVO h = new HabitsVO(id, name, quantity, due, dependents,prepare, 0);
             habits.add(h);
         }
     }
+    
+    private void setRecyclerView(View v){
+        RecyclerView recyclerView;
+        recyclerView = (RecyclerView) v.findViewById(R.id.list);
+        RecyclerView.LayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+    
+        RecyclerView.Adapter mAdapter;
+        mAdapter = new HabitAdapter(habits);
+        recyclerView.setAdapter(mAdapter);
+    
+        retrieve();
+    }
+    
 }
