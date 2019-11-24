@@ -40,7 +40,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
                     int destId = mData.get(id).getId();
                     deleteList(id);
                     notifyDataSetChanged();
-                    DBHelper dbHelper = new DBHelper(itemView.getContext());
+                    DBHelper dbHelper = DBHelper.getInstance(itemView.getContext());
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     String sql = "delete from destinations where _id=" + destId;
                     Log.e("안돼니", "정말 안돼니?");

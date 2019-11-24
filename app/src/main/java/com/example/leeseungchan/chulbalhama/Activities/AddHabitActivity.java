@@ -169,7 +169,7 @@ public class AddHabitActivity extends AppCompatActivity{
     }
     
     private void insertHabit(){
-        DBHelper helper = new DBHelper(this);
+        DBHelper helper = DBHelper.getInstance(this);
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(
             "insert into habits (habit_name, quantity, due, dependents, prepare) values(?,?,?,?,?)",
