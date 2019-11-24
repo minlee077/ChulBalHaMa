@@ -153,7 +153,6 @@ public class MapAddFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         Fragment fg;
-        bundle.putString("address",search_box.getText().toString());
 
         LocationVO temp = (LocationVO) bundle.getSerializable("locationVO");
         temp.setLongitude(saveLon);
