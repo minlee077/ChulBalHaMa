@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -61,12 +62,14 @@ public class HamaService extends Service implements GoogleApiClient.OnConnection
     Notification notification;
     LocationUpdateThread locationThread;
     LocationHelper locationHelper;
-    int count = 0;
-    boolean startupdate = false;
+
+    int count=0;
+    boolean startupdate=false;
     Calendar car;
 
     public class HamaServiceBinder extends Binder {
-        public HamaService getService() {
+        public HamaService getService(){
+
             return HamaService.this;
         }
     }
@@ -125,7 +128,6 @@ public class HamaService extends Service implements GoogleApiClient.OnConnection
         locationHelper = new LocationHelper(getApplicationContext());
         locationHelper.getLocation();
 
-
         startForeground(1, notification);
         return START_NOT_STICKY;
     }
@@ -162,6 +164,7 @@ public class HamaService extends Service implements GoogleApiClient.OnConnection
 
     class HamaHandler extends Handler {
         @Override
+
         public void handleMessage(android.os.Message msg) {
             if (locationHelper != null) {
                 locationHelper.setUpdateInterval(adjustTimeInterval());
@@ -174,10 +177,12 @@ public class HamaService extends Service implements GoogleApiClient.OnConnection
     }
 
     public int adjustTimeInterval() {
+
         car = Calendar.getInstance();
         int datOfWeek = car.get(Calendar.DAY_OF_WEEK);
         int hour = car.get(Calendar.HOUR);
         int minute = car.get(Calendar.MINUTE);
+
         Toast.makeText(getApplicationContext(), "현재시간은 " + hour + "시" + minute + "분 입니다.", Toast.LENGTH_SHORT).show();
         //TODO DB 시간 조회 후 Time Interval 재설정
         return 3000;
@@ -410,5 +415,6 @@ public class HamaService extends Service implements GoogleApiClient.OnConnection
         WorkManager.getInstance().enqueueUniqueWork("uniqueWork", ExistingWorkPolicy.REPLACE,workRequest);
 
     }
+
 
 }

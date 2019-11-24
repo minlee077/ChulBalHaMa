@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         DBHelper dbHelper = DBHelper.getInstance(this);
+
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 //        dbHelper.setDays();
 //        dbHelper.setUser();
