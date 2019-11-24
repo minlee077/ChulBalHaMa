@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 lastAction = maxIdx;
             }
 
-
+            Toast.makeText(context,strStatus,Toast.LENGTH_LONG);
             Log.e(TAG, strStatus);
             detectedActivities.setText(strStatus);
 
@@ -251,16 +251,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+        Log.e("pause","onPause called");
+
         super.onPause();
     }
 
 
     @Override
-    protected void onStop() {
+    protected void onStop() {//강제 종료시 호출보장 x
         super.onStop();
+        Log.e("stop","onStop called");
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
         if (googleApiClient != null)
             googleApiClient.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("destroy","OnDestroy");
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -272,6 +283,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
+        //LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
     }
 }
