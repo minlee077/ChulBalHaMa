@@ -4,9 +4,12 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,13 +18,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.leeseungchan.chulbalhama.Activities.MainActivity;
 import com.example.leeseungchan.chulbalhama.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.DetectedActivity;
+
+import java.util.ArrayList;
 
 public class LocationHelper {
+
+
+
     LocationListener gpsLocationListener;
     LocationManager lm;
     DistanceCalc calc;
@@ -29,6 +45,8 @@ public class LocationHelper {
     NotificationManager manager;
     public static final String CHANNEL_ID = "location_noti_channel";
     private int updateInterval = 5000;
+
+    private boolean activityRecognitionStart = false;
 
     double lastLongitude;
     double lastLatitude;
@@ -80,6 +98,11 @@ public class LocationHelper {
 //                        Toast.makeText(context, "책을 가지고 나가세요!", Toast.LENGTH_SHORT).show();
 //                    }
 //                }
+                if(!activityRecognitionStart)
+                {
+
+
+                }
                 lastLatitude = latitude;
                 lastLongitude = longitude;
 
@@ -138,4 +161,6 @@ public class LocationHelper {
             manager.createNotificationChannel(serviceChannel);
         }
     }
+
+
 }
