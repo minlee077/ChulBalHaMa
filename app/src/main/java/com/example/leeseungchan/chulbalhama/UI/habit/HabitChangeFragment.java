@@ -131,7 +131,6 @@ public class HabitChangeFragment extends Fragment {
         // set delete button gone
         item.setVisibility(item.DELETE_BTN, View.GONE);
     }
-    
     private String getTitle(int id){
         String title = null;
         switch (id){
@@ -153,6 +152,7 @@ public class HabitChangeFragment extends Fragment {
         }
         return title;
     }
+    
     private void setChangeBtnClickListener(View target, final View root){
         target.setOnClickListener(new View.OnClickListener() {
             @Override
