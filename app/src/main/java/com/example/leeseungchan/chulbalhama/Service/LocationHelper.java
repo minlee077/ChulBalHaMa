@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +48,9 @@ public class LocationHelper {
     public static final String CHANNEL_ID = "location_noti_channel";
     private int updateInterval = 5000;
 
+
     private boolean activityRecognitionStart = false;
+
 
     double lastLongitude;
     double lastLatitude;
@@ -103,6 +107,7 @@ public class LocationHelper {
 
 
                 }
+
                 lastLatitude = latitude;
                 lastLongitude = longitude;
 
@@ -161,6 +166,5 @@ public class LocationHelper {
             manager.createNotificationChannel(serviceChannel);
         }
     }
-
 
 }

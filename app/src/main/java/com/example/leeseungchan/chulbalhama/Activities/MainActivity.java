@@ -186,9 +186,11 @@ public class MainActivity extends AppCompatActivity
         return;
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mainCreated=false;
     }
+
 }
