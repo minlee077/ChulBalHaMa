@@ -2,12 +2,12 @@ package com.example.regression;
 
 import android.util.Log;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+        import java.io.Serializable;
+        import java.util.ArrayList;
 
-import org.apache.commons.math3.analysis.ParametricUnivariateFunction;
-import org.apache.commons.math3.fitting.CurveFitter;
-import org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer;
+        import org.apache.commons.math3.analysis.ParametricUnivariateFunction;
+        import org.apache.commons.math3.fitting.CurveFitter;
+        import org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer;
 
 
 public class NonLinearRegression  { // serialize하여 객체 인텐트 전송가능하게

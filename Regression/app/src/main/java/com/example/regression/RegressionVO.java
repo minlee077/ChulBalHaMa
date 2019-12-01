@@ -35,11 +35,29 @@ public class RegressionVO implements Serializable {
         return date;
     }
 
+
+    int habitID=0;
+
+    public double getHabitDueDate(int a)
+    {
+        habitFormationMeasure(1);
+        return 0.0;
+    }
+
+    public double habitFormationMeasure(int goal)
+    {
+        double estDate=formationDateEstimate();
+        double wantDate = getHabitDueDate(habitID);
+
+        return estDate/wantDate;
+
+    }
+
+
     public String encourageMessage(int goal)
     {
         double estDate=formationDateEstimate();
-        double wantDate = goal;
-
+        double wantDate = getHabitDueDate(habitID);
         if(estDate>wantDate)
         {//목표 보다 일찍 완성될 것으로 예상
             return "지금 처럼만 하신다면, 목표 기간 내에 습관을 형성하실 수 있을겁니다. 잘하고 계십니다!";
@@ -58,7 +76,6 @@ public class RegressionVO implements Serializable {
             {
                 return "조금만 더 노력하시면, 목표하신 기간내에 습관을 형성하실 수 있습니다!";
             }
-
         }
 
     }

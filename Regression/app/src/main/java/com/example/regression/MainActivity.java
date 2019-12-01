@@ -43,25 +43,27 @@ public class MainActivity extends AppCompatActivity {
         days = new ArrayList<Integer>();
         scores = new ArrayList<Double>();
 
-        for (int i = 1; i <= 67; i++)
+        for (int i = 1; i <= 12; i++)
             days.add(i);
-        scores.add(1.0);scores.add(10.0);scores.add(10.0);scores.add(19.0);
-        scores.add(20.0);scores.add(24.0);scores.add(23.0);scores.add(25.0);
-        scores.add(26.0);scores.add(24.0);scores.add(20.0);scores.add(23.0);
-        scores.add(25.0);scores.add(26.0);scores.add(24.0);scores.add(23.0);
-        scores.add(25.0);scores.add(27.0);scores.add(26.0);scores.add(29.0);
-        scores.add(30.0);scores.add(31.0);scores.add(32.0);scores.add(30.0);
-        scores.add(33.0);scores.add(31.0);scores.add(34.0);scores.add(35.0);
-        scores.add(36.0);scores.add(39.0);scores.add(39.0);scores.add(39.0);
-        scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(42.0);
-        scores.add(42.0);scores.add(40.0);scores.add(40.0);scores.add(39.0);
-        scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(41.0);
-        scores.add(42.0);scores.add(42.0);scores.add(40.0);scores.add(40.0);
-        scores.add(39.0);scores.add(39.0);scores.add(39.0);scores.add(40.0);
-        scores.add(41.0);scores.add(41.0);scores.add(42.0);scores.add(41.0);
-        scores.add(40.0);scores.add(40.0);scores.add(42.0);scores.add(42.0);
-        scores.add(40.0);scores.add(40.0);scores.add(41.0);scores.add(41.0);
-        scores.add(42.0);scores.add(42.0);scores.add(40.0);
+        scores.add(1.0);scores.add(3.0);scores.add(4.0);scores.add(5.0);
+        scores.add(5.0);scores.add(6.0);scores.add(7.0);scores.add(9.0);
+        scores.add(10.0);scores.add(11.0);scores.add(14.0);scores.add(15.0);
+//        scores.add(20.0);scores.add(24.0);scores.add(23.0);scores.add(25.0);
+//        scores.add(26.0);scores.add(24.0);scores.add(20.0);scores.add(23.0);
+//        scores.add(25.0);scores.add(26.0);scores.add(24.0);scores.add(23.0);
+//        scores.add(25.0);scores.add(27.0);scores.add(26.0);scores.add(29.0);
+//        scores.add(30.0);scores.add(31.0);scores.add(32.0);scores.add(30.0);
+//        scores.add(33.0);scores.add(31.0);scores.add(34.0);scores.add(35.0);
+//        scores.add(36.0);scores.add(39.0);scores.add(39.0);scores.add(39.0);
+//        scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(42.0);
+//        scores.add(42.0);scores.add(40.0);scores.add(40.0);scores.add(39.0);
+//        scores.add(40.0);scores.add(41.0);scores.add(41.0);scores.add(41.0);
+//        scores.add(42.0);scores.add(42.0);scores.add(40.0);scores.add(40.0);
+//        scores.add(39.0);scores.add(39.0);scores.add(39.0);scores.add(40.0);
+//        scores.add(41.0);scores.add(41.0);scores.add(42.0);scores.add(41.0);
+//        scores.add(40.0);scores.add(40.0);scores.add(42.0);scores.add(42.0);
+//        scores.add(40.0);scores.add(40.0);scores.add(41.0);scores.add(41.0);
+//        scores.add(42.0);scores.add(42.0);scores.add(40.0);
         datasetVO.setDaysNScores(days,scores);
     }
 
